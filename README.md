@@ -55,10 +55,14 @@ func main() {
 	mux := chi.NewRouter()
 
 	// Create a new API
-	api := oasis.NewAPI(mux, oasis.APIConfig{
-		Title:   "My API",
-		Version: "1.0.0",
-	})
+	api := oasis.NewAPI(
+		mux,
+		NewAPIConfig().
+			SetAPITitle("Greeting API").
+			SetAPIVersion("1.0.0").
+			SetDocsPath("/docs").
+			SetSchemaPath("/openapi"),
+	)
 
 	// Register GET /greeting/{name}
 	api.RegisterOperation(
