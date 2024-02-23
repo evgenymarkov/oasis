@@ -58,7 +58,7 @@ func main() {
 	api := oasis.NewAPI(
 		mux,
 		NewAPIConfig().
-			SetAPITitle("My API").
+			SetAPITitle("Greeting API").
 			SetAPIVersion("1.0.0").
 			SetDocsPath("/docs").
 			SetSchemaPath("/openapi"),

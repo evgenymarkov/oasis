@@ -32,7 +32,7 @@ type apiConfigRouting struct {
 func NewAPIConfig() *APIConfig {
 	return &APIConfig{
 		OpenAPI: apiConfigOpenAPI{
-			Title:   "API",
+			Title:   "Service API",
 			Version: "0.0.1",
 		},
 		Routing: apiConfigRouting{
