@@ -4,7 +4,9 @@ A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI 3 and J
 
 ## Features
 
--   Declarative Operation interface on top of net/http router:
+-   Step-by-step migration from raw handlers to documented ones
+-   Swagger UI rendering using generated OpenAPI schema
+-   Declarative interface for API operations:
     -   Operation & models documentation
     -   Request params (path, query, or header)
     -   Request body
@@ -14,12 +16,6 @@ A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI 3 and J
     -   Generates JSON Schema from Go types
     -   Automatic input model validation & error handling
     -   Static typing for path/query/header params, bodies, response headers, etc
--   Swagger UI rendering using generated OpenAPI schema
--   Support for middlewares compatible with net/http
--   Content negotiation between server and client
-    -   Support for [JSON](https://tools.ietf.org/html/rfc8259)
-    -   Support for [CBOR](https://datatracker.ietf.org/doc/html/rfc7049)
-    -   Support for [MsgPack](https://msgpack.org)
 
 ## Example
 
@@ -34,6 +30,7 @@ import (
 	"net/http"
 
 	"github.com/evgenymarkov/oasis"
+	"github.com/go-chi/chi/v5"
 )
 
 const (
@@ -54,23 +51,32 @@ type GreetingOutput struct {
 }
 
 func main() {
+	// Create a new mux
+	mux := chi.NewRouter()
+
 	// Create a new API
-	api := oasis.NewAPI(oasis.NewAPIConfig("My API", "1.0.0"))
-
-	// Register GET /greeting/{name}
-	api.Register(oasis.Operation{
-		OperationID: "get-greeting",
-		Summary:     "Get a greeting",
-		Method:      http.MethodGet,
-		Path:        "/greeting/{name}",
-	}, func(ctx context.Context, input *GreetingInput) (*GreetingOutput, error) {
-		response := &GreetingOutput{}
-		response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
-
-		return response, nil
+	api := oasis.NewAPI(mux, oasis.APIConfig{
+		Title:   "My API",
+		Version: "1.0.0",
 	})
 
+	// Register GET /greeting/{name}
+	api.RegisterOperation(
+		oasis.Operation{
+			ID: 	 "get-greeting",
+			Method:  http.MethodGet,
+			Path:    "/greeting/{name}",
+			Summary: "Get a greeting",
+		},
+		func(ctx oasis.Context, input *GreetingInput) (*GreetingOutput, error) {
+			response := &GreetingOutput{}
+			response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
+
+			return response, nil
+		},
+	)
+
 	// Start handling incoming requests
-	http.ListenAndServe(host+":"+port, api)
+	http.ListenAndServe(host+":"+port, mux)
 }
 ```
