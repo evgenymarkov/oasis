@@ -43,19 +43,16 @@ func main() {
 	// Create router
 	router := chi.NewRouter()
 
-	// Create root OpenAPI document
-	openapiDocument := openapi.NewDocument().
-		SetTitle("Greeting API").
-		SetVersion("1.0.0")
-
-	// Create container for API operations
+	// Create API wrapper
 	api := oasis.NewAPI(
 		router,
-		openapiDocument,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
 			SetJSONDocumentPath("/api/openapi.json").
 			SetYAMLDocumentPath("/api/openapi.yaml"),
+		openapi.NewDocument().
+			SetTitle("Greeting API").
+			SetVersion("1.0.0"),
 	)
 
 	// Register get-greeting operation
