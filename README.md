@@ -25,11 +25,12 @@ Here is a basic hello world example with Oasis:
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/evgenymarkov/oasis"
+	"github.com/evgenymarkov/oasis/openapi"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -38,49 +39,67 @@ const (
 	port = 3000
 )
 
-// GreetingInput represents the greeting operation request.
-type GreetingInput struct {
-	Name string `path:"name" maxLength:"30" example:"world" doc:"Name to greet"`
+func main() {
+	// Create router
+	router := chi.NewRouter()
+
+	// Create root OpenAPI document
+	openapiDocument := openapi.NewDocument().
+		SetTitle("Greeting API").
+		SetVersion("1.0.0")
+
+	// Create container for API operations
+	api := oasis.NewAPI(
+		router,
+		openapiDocument,
+		oasis.NewAPIConfig().
+			SetDocsUIPath("/api").
+			SetJSONDocumentPath("/api/openapi.json").
+			SetYAMLDocumentPath("/api/openapi.yaml"),
+	)
+
+	// Register get-greeting operation
+	api.RegisterOperation(GetGreetingOperation, GetGreetingHandler)
+
+	// Start handling incoming requests
+	http.ListenAndServe(host+":"+port, router)
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/evgenymarkov/oasis"
+	"github.com/evgenymarkov/oasis/openapi"
+)
+
+var GetGreetingOperation = openapi.NewOperation().
+	SetID("get-greeting").
+	SetMethod(http.MethodGet).
+	SetPath("/greeting/{name}").
+	SetSummary("Get a greeting")
+
+type GetGreetingInput struct {
+	Name string `path:"name" maxLength:"30" example:"world"`
 }
 
-// GreetingOutput represents the greeting operation response.
-type GreetingOutput struct {
+type GetGreetingOutput struct {
 	Body struct {
-		Message string `json:"message" example:"Hello, world!" doc:"Greeting message"`
+		Message string `json:"message" example:"Hello, world!"`
 	}
 }
 
-func main() {
-	// Create a new mux
-	mux := chi.NewRouter()
+func GetGreetingHandler(
+	ctx oasis.Context,
+	input *GetGreetingInput,
+) (*GetGreetingOutput, error) {
+	response := &GreetingOutput{}
+	response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
 
-	// Create a new API
-	api := oasis.NewAPI(
-		mux,
-		NewAPIConfig().
-			SetAPITitle("Greeting API").
-			SetAPIVersion("1.0.0").
-			SetDocsPath("/docs").
-			SetSchemaPath("/openapi"),
-	)
-
-	// Register GET /greeting/{name}
-	api.RegisterOperation(
-		oasis.Operation{
-			ID: 	 "get-greeting",
-			Method:  http.MethodGet,
-			Path:    "/greeting/{name}",
-			Summary: "Get a greeting",
-		},
-		func(ctx oasis.Context, input *GreetingInput) (*GreetingOutput, error) {
-			response := &GreetingOutput{}
-			response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
-
-			return response, nil
-		},
-	)
-
-	// Start handling incoming requests
-	http.ListenAndServe(host+":"+port, mux)
+	return response, nil
 }
 ```
