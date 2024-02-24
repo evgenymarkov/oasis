@@ -1,67 +1,46 @@
 package oasis
 
-// Config represents a configuration for a new API.
+// APIConfig struct describes configuration options for API.
 type APIConfig struct {
-	// OpenAPI describes the configurable fields of the root OpenAPI document.
-	OpenAPI apiConfigOpenAPI
+	// DocsUIPath is the path to the API documentation UI.
+	//
+	// Default: "/api".
+	DocsUIPath string
 
-	// Routing describes the options that affect the behavior of the router.
-	Routing apiConfigRouting
-}
+	// JSONDocumentPath is the path to the API specification in JSON format.
+	//
+	// Default: "/api/openapi.json".
+	JSONDocumentPath string
 
-type apiConfigOpenAPI struct {
-	// Title of the API.
-	Title string
-
-	// Version of the OpenAPI document.
-	Version string
-}
-
-type apiConfigRouting struct {
-	// DocsPath is the path to the API documentation UI.
-	// If set to `/docs` it will allow clients to get `/docs`
-	// to view the Swagger UI in a browser.
-	DocsPath string
-
-	// SchemaPath is the path to the API specification without extension.
-	// If set to `/openapi` it will allow clients to get `/openapi.json` or `/openapi.yaml`.
-	SchemaPath string
+	// YAMLDocumentPath is the path to the API specification in YAML format.
+	//
+	// Default: "/api/openapi.yaml"
+	YAMLDocumentPath string
 }
 
 // NewAPIConfig method creates new APIConfig with default settings.
 func NewAPIConfig() *APIConfig {
 	return &APIConfig{
-		OpenAPI: apiConfigOpenAPI{
-			Title:   "Service API",
-			Version: "0.0.1",
-		},
-		Routing: apiConfigRouting{
-			DocsPath:   "/docs",
-			SchemaPath: "/openapi",
-		},
+		DocsUIPath:       "/api",
+		JSONDocumentPath: "/api/openapi.json",
+		YAMLDocumentPath: "/api/openapi.yaml",
 	}
 }
 
-// SetAPITitle method sets OpenAPI document title.
-func (c *APIConfig) SetAPITitle(title string) *APIConfig {
-	c.OpenAPI.Title = title
+// SetDocsUIPath method sets custom path for the API documentation UI.
+func (c *APIConfig) SetDocsUIPath(path string) *APIConfig {
+	c.DocsUIPath = path
 	return c
 }
 
-// SetAPIVersion method sets OpenAPI document version.
-func (c *APIConfig) SetAPIVersion(version string) *APIConfig {
-	c.OpenAPI.Version = version
+// SetJSONDocumentPath method sets custom path for the API specification in JSON format.
+func (c *APIConfig) SetJSONDocumentPath(path string) *APIConfig {
+	c.JSONDocumentPath = path
 	return c
 }
 
-// SetDocsPath method sets custom path for Swagger UI handlers
-func (c *APIConfig) SetDocsPath(path string) *APIConfig {
-	c.Routing.DocsPath = path
-	return c
-}
-
-// SetSchemaPath method sets custom path for OpenAPI schema handlers
-func (c *APIConfig) SetSchemaPath(path string) *APIConfig {
-	c.Routing.SchemaPath = path
+// SetYAMLDocumentPath method sets custom path for the API specification in YAML format.
+func (c *APIConfig) SetYAMLDocumentPath(path string) *APIConfig {
+	c.YAMLDocumentPath = path
 	return c
 }
