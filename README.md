@@ -25,11 +25,11 @@ Here is a basic hello world example with Oasis:
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
 	"github.com/evgenymarkov/oasis"
+	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -38,49 +38,49 @@ const (
 	port = 3000
 )
 
-// GreetingInput represents the greeting operation request.
-type GreetingInput struct {
-	Name string `path:"name" maxLength:"30" example:"world" doc:"Name to greet"`
-}
-
-// GreetingOutput represents the greeting operation response.
-type GreetingOutput struct {
-	Body struct {
-		Message string `json:"message" example:"Hello, world!" doc:"Greeting message"`
-	}
-}
-
 func main() {
-	// Create a new mux
-	mux := chi.NewRouter()
+	// Create router
+	router := chi.NewRouter()
 
-	// Create a new API
+	// Create API wrapper
 	api := oasis.NewAPI(
-		mux,
-		NewAPIConfig().
-			SetAPITitle("Greeting API").
-			SetAPIVersion("1.0.0").
-			SetDocsPath("/docs").
-			SetSchemaPath("/openapi"),
+		router,
+		oasis.NewAPIConfig().
+			SetDocsUIPath("/api").
+			SetJSONDocumentPath("/api/openapi.json").
+			SetYAMLDocumentPath("/api/openapi.yaml"),
+		openapi3.NewDocument().
+			SetTitle("Greeting API").
+			SetVersion("1.0.0"),
 	)
 
-	// Register GET /greeting/{name}
-	api.RegisterOperation(
-		oasis.Operation{
-			ID: 	 "get-greeting",
-			Method:  http.MethodGet,
-			Path:    "/greeting/{name}",
-			Summary: "Get a greeting",
-		},
-		func(ctx oasis.Context, input *GreetingInput) (*GreetingOutput, error) {
-			response := &GreetingOutput{}
-			response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
-
-			return response, nil
-		},
+	// Register operations
+	api.Get(
+		"/greeting/{name}",
+		GetGreetingHandler,
+		GetGreetingOperation,
 	)
 
 	// Start handling incoming requests
-	http.ListenAndServe(host+":"+port, mux)
+	http.ListenAndServe(host+":"+port, router)
+}
+```
+
+```go
+package main
+
+import (
+	"net/http"
+
+	"github.com/evgenymarkov/oasis"
+	"github.com/evgenymarkov/oasis/openapi3"
+)
+
+var GetGreetingOperation = openapi3.NewOperation().
+	SetOperationID("get-greeting").
+	SetSummary("Get a greeting")
+
+func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello, world!"))
 }
 ```
