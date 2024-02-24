@@ -4,12 +4,12 @@ package oasis
 type APIConfig struct {
 	// DocsUIPath is the path to the API documentation UI.
 	//
-	// Default: "/api".
+	// Default: "/api"
 	DocsUIPath string
 
 	// JSONDocumentPath is the path to the API specification in JSON format.
 	//
-	// Default: "/api/openapi.json".
+	// Default: "/api/openapi.json"
 	JSONDocumentPath string
 
 	// YAMLDocumentPath is the path to the API specification in YAML format.
