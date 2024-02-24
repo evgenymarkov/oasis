@@ -30,7 +30,7 @@ import (
 	"os"
 
 	"github.com/evgenymarkov/oasis"
-	"github.com/evgenymarkov/oasis/openapi"
+	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -50,13 +50,17 @@ func main() {
 			SetDocsUIPath("/api").
 			SetJSONDocumentPath("/api/openapi.json").
 			SetYAMLDocumentPath("/api/openapi.yaml"),
-		openapi.NewDocument().
+		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
 	)
 
-	// Register get-greeting operation
-	api.RegisterOperation(GetGreetingOperation, GetGreetingHandler)
+	// Register operations
+	api.Get(
+		"/greeting/{name}",
+		GetGreetingHandler,
+		GetGreetingOperation,
+	)
 
 	// Start handling incoming requests
 	http.ListenAndServe(host+":"+port, router)
@@ -67,36 +71,17 @@ func main() {
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/evgenymarkov/oasis"
-	"github.com/evgenymarkov/oasis/openapi"
+	"github.com/evgenymarkov/oasis/openapi3"
 )
 
-var GetGreetingOperation = openapi.NewOperation().
-	SetID("get-greeting").
-	SetMethod(http.MethodGet).
-	SetPath("/greeting/{name}").
+var GetGreetingOperation = openapi3.NewOperation().
+	SetOperationID("get-greeting").
 	SetSummary("Get a greeting")
 
-type GetGreetingInput struct {
-	Name string `path:"name" maxLength:"30" example:"world"`
-}
-
-type GetGreetingOutput struct {
-	Body struct {
-		Message string `json:"message" example:"Hello, world!"`
-	}
-}
-
-func GetGreetingHandler(
-	ctx oasis.Context,
-	input *GetGreetingInput,
-) (*GetGreetingOutput, error) {
-	response := &GreetingOutput{}
-	response.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
-
-	return response, nil
+func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello, world!"))
 }
 ```
