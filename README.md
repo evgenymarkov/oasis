@@ -27,7 +27,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/evgenymarkov/oasis"
 	"github.com/evgenymarkov/oasis/openapi3"
