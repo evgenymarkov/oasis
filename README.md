@@ -4,7 +4,7 @@ A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI.
 
 ## Features
 
--	OpenAPI definitions for your endpoints in Go code
+-   OpenAPI definitions for your endpoints in Go code
 -   Swagger UI rendering using compiled OpenAPI document
 -   Step-by-step migration from raw handlers to documented ones
 
@@ -74,3 +74,11 @@ func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello, world!"))
 }
 ```
+
+## Development
+
+1. [Install Go 1.22](https://github.com/go-nv/goenv) to run tests.
+2. [Install Taskfile](https://taskfile.dev/installation) to run tasks.
+3. [Install golangci-lint](https://golangci-lint.run/usage/install) to lint code.
+
+Now you can use any commands from the `Taskfile.yaml` and edit code on your machine.
