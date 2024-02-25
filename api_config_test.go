@@ -1,13 +1,14 @@
-package oasis
+package oasis_test
 
 import (
 	"testing"
 
+	"github.com/evgenymarkov/oasis"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAPIConfigDefaults(t *testing.T) {
-	config := NewAPIConfig()
+	config := oasis.NewAPIConfig()
 
 	assert.Equal(t, "/api", config.DocsUIPath)
 	assert.Equal(t, "/api/openapi.json", config.JSONDocumentPath)
@@ -15,7 +16,7 @@ func TestAPIConfigDefaults(t *testing.T) {
 }
 
 func TestAPIConfigOverrides(t *testing.T) {
-	config := NewAPIConfig().
+	config := oasis.NewAPIConfig().
 		SetDocsUIPath("/docs").
 		SetJSONDocumentPath("/docs/openapi.json").
 		SetYAMLDocumentPath("/docs/openapi.yaml")
