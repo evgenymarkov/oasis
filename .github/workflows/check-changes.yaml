@@ -8,8 +8,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  check-changes:
-    name: Check changes
+  lint-test:
+    name: Lint & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,9 +19,20 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.22"
-          cache: false
+
+      - name: Install dependencies
+        run: go get .
 
       - name: Lint code
         uses: golangci/golangci-lint-action@v4
         with:
           version: v1.54
+
+      - name: Run tests
+        run: go test -json > test-results.json
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.json
