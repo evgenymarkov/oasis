@@ -1,10 +1,12 @@
 version: "3"
 
 tasks:
-  test:
-    cmds:
-      - go test ./...
-
   lint:
     cmds:
       - golangci-lint run ./...
+
+  test:
+    env:
+      CGO_ENABLED: 0
+    cmds:
+      - go test -v -race -shuffle on ./...
