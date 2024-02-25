@@ -29,6 +29,4 @@ jobs:
       #     version: v1.54
 
       - name: Run tests
-        env:
-          CGO_ENABLED: 0
         run: go test -v -race -shuffle on ./...
