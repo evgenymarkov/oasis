@@ -1,21 +1,12 @@
 # Oasis
 
-A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI 3 and JSON Schema.
+A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI.
 
 ## Features
 
+-	OpenAPI definitions for your endpoints in Go code
+-   Swagger UI rendering using compiled OpenAPI document
 -   Step-by-step migration from raw handlers to documented ones
--   Swagger UI rendering using generated OpenAPI schema
--   Declarative interface for API operations:
-    -   Operation & models documentation
-    -   Request params (path, query, or header)
-    -   Request body
-    -   Responses (including errors)
-    -   Response headers
--   Annotated Go types for input and output models
-    -   Generates JSON Schema from Go types
-    -   Automatic input model validation & error handling
-    -   Static typing for path/query/header params, bodies, response headers, etc
 
 ## Example
 
@@ -25,7 +16,6 @@ Here is a basic hello world example with Oasis:
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/evgenymarkov/oasis"
