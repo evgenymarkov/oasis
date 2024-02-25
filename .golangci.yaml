@@ -1,0 +1,42 @@
+linters:
+  presets:
+    - bugs
+    - comment
+    - complexity
+    - error
+    - format
+    - import
+    - metalinter
+    - module
+    - performance
+    - style
+    - test
+    - unused
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - paralleltest
+        - gochecknoglobals
+
+linters-settings:
+  depguard:
+    rules:
+      main:
+        files:
+          - $all
+          - "!$test"
+        allow:
+          - $gostd
+          - github.com/go-chi/chi/v5
+          - github.com/evgenymarkov/oasis/openapi3
+      test:
+        files:
+          - "$test"
+        allow:
+          - $gostd
+          - github.com/go-chi/chi/v5
+          - github.com/stretchr/testify
+          - github.com/evgenymarkov/oasis

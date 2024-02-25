@@ -1,21 +1,12 @@
 # Oasis
 
-A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI 3 and JSON Schema.
+A simple library for building HTTP REST/RPC APIs in Go backed by OpenAPI.
 
 ## Features
 
+-   OpenAPI definitions for your endpoints in Go code
+-   Swagger UI rendering using compiled OpenAPI document
 -   Step-by-step migration from raw handlers to documented ones
--   Swagger UI rendering using generated OpenAPI schema
--   Declarative interface for API operations:
-    -   Operation & models documentation
-    -   Request params (path, query, or header)
-    -   Request body
-    -   Responses (including errors)
-    -   Response headers
--   Annotated Go types for input and output models
-    -   Generates JSON Schema from Go types
-    -   Automatic input model validation & error handling
-    -   Static typing for path/query/header params, bodies, response headers, etc
 
 ## Example
 
@@ -25,7 +16,6 @@ Here is a basic hello world example with Oasis:
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/evgenymarkov/oasis"
@@ -84,3 +74,11 @@ func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello, world!"))
 }
 ```
+
+## Development
+
+1. [Install Go 1.22](https://github.com/go-nv/goenv) to run tests.
+2. [Install Taskfile](https://taskfile.dev/installation) to run tasks.
+3. [Install golangci-lint](https://golangci-lint.run/usage/install) to lint code.
+
+Now you can use any commands from the `Taskfile.yaml` and edit code on your machine.

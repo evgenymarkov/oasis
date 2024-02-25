@@ -1,4 +1,4 @@
-package oasis
+package oasis_test
 
 import (
 	"net/http"
@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/evgenymarkov/oasis"
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
@@ -15,16 +16,16 @@ var pingOperation = openapi3.NewOperation().
 	SetOperationID("ping").
 	SetSummary("Ping server")
 
-func pingHandler(w http.ResponseWriter, r *http.Request) {
+func pingHandler(w http.ResponseWriter, _ *http.Request) {
 	w.Write([]byte("pong"))
 }
 
 func TestAPIEmpty(t *testing.T) {
 	router := chi.NewRouter()
 
-	NewAPI(
+	oasis.NewAPI(
 		router,
-		NewAPIConfig().
+		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
 			SetJSONDocumentPath("/api/openapi.json").
 			SetYAMLDocumentPath("/api/openapi.yaml"),
@@ -39,9 +40,9 @@ func TestAPIEmpty(t *testing.T) {
 func TestAPIWithOperations(t *testing.T) {
 	router := chi.NewRouter()
 
-	api := NewAPI(
+	api := oasis.NewAPI(
 		router,
-		NewAPIConfig().
+		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
 			SetJSONDocumentPath("/api/openapi.json").
 			SetYAMLDocumentPath("/api/openapi.yaml"),

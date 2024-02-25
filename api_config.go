@@ -30,17 +30,20 @@ func NewAPIConfig() *APIConfig {
 // SetDocsUIPath method sets custom path for the API documentation UI.
 func (c *APIConfig) SetDocsUIPath(path string) *APIConfig {
 	c.DocsUIPath = path
+
 	return c
 }
 
 // SetJSONDocumentPath method sets custom path for the API specification in JSON format.
 func (c *APIConfig) SetJSONDocumentPath(path string) *APIConfig {
 	c.JSONDocumentPath = path
+
 	return c
 }
 
 // SetYAMLDocumentPath method sets custom path for the API specification in YAML format.
 func (c *APIConfig) SetYAMLDocumentPath(path string) *APIConfig {
 	c.YAMLDocumentPath = path
+
 	return c
 }

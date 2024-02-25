@@ -47,11 +47,13 @@ func NewDocument() *Document {
 // SetTitle method sets OpenAPI document title.
 func (c *Document) SetTitle(title string) *Document {
 	c.Info.Title = title
+
 	return c
 }
 
 // SetVersion method sets OpenAPI document version.
 func (c *Document) SetVersion(version string) *Document {
 	c.Info.Version = version
+
 	return c
 }

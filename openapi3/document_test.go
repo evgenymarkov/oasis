@@ -1,13 +1,14 @@
-package openapi3
+package openapi3_test
 
 import (
 	"testing"
 
+	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDocumentDefaults(t *testing.T) {
-	document := NewDocument()
+	document := openapi3.NewDocument()
 
 	assert.Equal(t, "3.1.0", document.OpenAPI)
 	assert.Equal(t, "API", document.Info.Title)
@@ -15,7 +16,7 @@ func TestDocumentDefaults(t *testing.T) {
 }
 
 func TestDocumentOverrides(t *testing.T) {
-	document := NewDocument().
+	document := openapi3.NewDocument().
 		SetTitle("Greeting API").
 		SetVersion("1.0.0")
 
