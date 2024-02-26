@@ -70,8 +70,8 @@ var GetGreetingOperation = openapi3.NewOperation().
 	SetOperationID("get-greeting").
 	SetSummary("Get a greeting")
 
-func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, world!"))
+func GetGreetingHandler(response http.ResponseWriter, request *http.Request) {
+	response.Write([]byte("Hello, world!"))
 }
 ```
 

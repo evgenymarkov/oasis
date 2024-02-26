@@ -16,8 +16,8 @@ var pingOperation = openapi3.NewOperation().
 	SetOperationID("ping").
 	SetSummary("Ping server")
 
-func pingHandler(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("pong"))
+func pingHandler(response http.ResponseWriter, _ *http.Request) {
+	response.Write([]byte("pong"))
 }
 
 func TestAPIEmpty(t *testing.T) {
