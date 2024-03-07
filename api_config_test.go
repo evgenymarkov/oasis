@@ -11,17 +11,14 @@ func TestAPIConfigDefaults(t *testing.T) {
 	config := oasis.NewAPIConfig()
 
 	assert.Equal(t, "/api", config.DocsUIPath)
-	assert.Equal(t, "/api/openapi.json", config.JSONDocumentPath)
-	assert.Equal(t, "/api/openapi.yaml", config.YAMLDocumentPath)
+	assert.Equal(t, "/api/openapi.json", config.DocumentPath)
 }
 
 func TestAPIConfigOverrides(t *testing.T) {
 	config := oasis.NewAPIConfig().
 		SetDocsUIPath("/docs").
-		SetJSONDocumentPath("/docs/openapi.json").
-		SetYAMLDocumentPath("/docs/openapi.yaml")
+		SetDocumentPath("/docs/openapi.json")
 
 	assert.Equal(t, "/docs", config.DocsUIPath)
-	assert.Equal(t, "/docs/openapi.json", config.JSONDocumentPath)
-	assert.Equal(t, "/docs/openapi.yaml", config.YAMLDocumentPath)
+	assert.Equal(t, "/docs/openapi.json", config.DocumentPath)
 }

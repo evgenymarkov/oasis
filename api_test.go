@@ -27,8 +27,7 @@ func TestAPIEmpty(t *testing.T) {
 		router,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
-			SetJSONDocumentPath("/api/openapi.json").
-			SetYAMLDocumentPath("/api/openapi.yaml"),
+			SetDocumentPath("/api/openapi.json"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
@@ -44,8 +43,7 @@ func TestAPIWithOperations(t *testing.T) {
 		router,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
-			SetJSONDocumentPath("/api/openapi.json").
-			SetYAMLDocumentPath("/api/openapi.yaml"),
+			SetDocumentPath("/api/openapi.json"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),

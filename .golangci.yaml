@@ -32,6 +32,7 @@ linters-settings:
           - $gostd
           - github.com/go-chi/chi/v5
           - github.com/evgenymarkov/oasis/openapi3
+          - github.com/evgenymarkov/oasis/rendering
       test:
         files:
           - "$test"

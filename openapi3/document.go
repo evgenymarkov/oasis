@@ -7,7 +7,7 @@ type Document struct {
 	// OpenAPI is the version number of the OpenAPI Specification.
 	//
 	// Default: "3.1.0"
-	OpenAPI string
+	OpenAPI string `json:"openapi"`
 
 	// Info provides metadata about the API.
 	//
@@ -15,7 +15,7 @@ type Document struct {
 	// 	Title:   "API",
 	//	Version: "0.0.1",
 	// }
-	Info DocumentInfo
+	Info DocumentInfo `json:"info"`
 }
 
 // DocumentInfo provides metadata about the API.
@@ -25,12 +25,12 @@ type DocumentInfo struct {
 	// The title of the API.
 	//
 	// Default: "API"
-	Title string
+	Title string `json:"title"`
 
 	// The version of the OpenAPI document.
 	//
 	// Default: "0.0.1"
-	Version string
+	Version string `json:"version"`
 }
 
 // NewDocument creates new OpenAPI document with default values.
