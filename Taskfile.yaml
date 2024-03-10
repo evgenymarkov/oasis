@@ -8,3 +8,9 @@ tasks:
   test:
     cmds:
       - go test -v -race -shuffle on ./...
+
+  run-*:
+    vars:
+      EXAMPLE: '{{index .MATCH 0}}'
+    cmds:
+      - go run ./examples/{{.EXAMPLE}}

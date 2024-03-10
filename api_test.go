@@ -16,8 +16,8 @@ var pingOperation = openapi3.NewOperation().
 	SetOperationID("ping").
 	SetSummary("Ping server")
 
-func pingHandler(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("pong"))
+func pingHandler(response http.ResponseWriter, _ *http.Request) {
+	response.Write([]byte("pong"))
 }
 
 func TestAPIEmpty(t *testing.T) {
@@ -27,14 +27,16 @@ func TestAPIEmpty(t *testing.T) {
 		router,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
-			SetJSONDocumentPath("/api/openapi.json").
-			SetYAMLDocumentPath("/api/openapi.yaml"),
+			SetDocumentPath("/api/openapi.json"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
 	)
 
-	assert.Empty(t, router.Routes())
+	routes := router.Routes()
+	assert.Len(t, routes, 1)
+	assert.Nil(t, routes[0].SubRoutes)
+	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
 }
 
 func TestAPIWithOperations(t *testing.T) {
@@ -44,8 +46,7 @@ func TestAPIWithOperations(t *testing.T) {
 		router,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
-			SetJSONDocumentPath("/api/openapi.json").
-			SetYAMLDocumentPath("/api/openapi.yaml"),
+			SetDocumentPath("/api/openapi.json"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
@@ -62,7 +63,10 @@ func TestAPIWithOperations(t *testing.T) {
 	api.Trace("/ping-trace", pingHandler, pingOperation)
 
 	routes := router.Routes()
-	assert.Len(t, routes, 9)
+	assert.Len(t, routes, 10)
+
+	assert.Nil(t, routes[0].SubRoutes)
+	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
 
 	methods := []string{
 		http.MethodGet,

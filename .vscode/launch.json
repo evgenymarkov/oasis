@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "Run examples/basic",
+      "type": "go",
+      "mode": "auto",
+      "request": "launch",
+      "program": "${workspaceFolder}/examples/basic"
+    }
+  ]
+}

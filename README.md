@@ -24,8 +24,9 @@ import (
 )
 
 const (
-	host = "localhost"
-	port = 3000
+	serverHost = "localhost"
+	serverPort = "3000"
+	serverAddr = serverHost + ":" + serverPort
 )
 
 func main() {
@@ -37,8 +38,7 @@ func main() {
 		router,
 		oasis.NewAPIConfig().
 			SetDocsUIPath("/api").
-			SetJSONDocumentPath("/api/openapi.json").
-			SetYAMLDocumentPath("/api/openapi.yaml"),
+			SetDocumentPath("/api/openapi.json"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
@@ -52,7 +52,9 @@ func main() {
 	)
 
 	// Start handling incoming requests
-	http.ListenAndServe(host+":"+port, router)
+	if startErr := http.ListenAndServe(serverAddr, router); startErr != nil {
+		panic(startErr)
+	}
 }
 ```
 
@@ -62,7 +64,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/evgenymarkov/oasis"
 	"github.com/evgenymarkov/oasis/openapi3"
 )
 
@@ -70,8 +71,8 @@ var GetGreetingOperation = openapi3.NewOperation().
 	SetOperationID("get-greeting").
 	SetSummary("Get a greeting")
 
-func GetGreetingHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello, world!"))
+func GetGreetingHandler(response http.ResponseWriter, _ *http.Request) {
+	_, _ = response.Write([]byte("Hello, world!"))
 }
 ```
 

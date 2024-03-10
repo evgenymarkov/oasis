@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/evgenymarkov/oasis/openapi3"
+	"github.com/evgenymarkov/oasis/rendering"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -20,6 +21,11 @@ func NewAPI(
 	config *APIConfig,
 	document *openapi3.Document,
 ) *API {
+	router.Get(
+		config.DocumentPath,
+		rendering.NewDocumentHandler(document),
+	)
+
 	return &API{
 		router:   router,
 		config:   config,

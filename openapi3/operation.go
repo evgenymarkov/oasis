@@ -1,8 +1,8 @@
 package openapi3
 
 type Operation struct {
-	OperationID string
-	Summary     string
+	OperationID string `json:"operationId"`
+	Summary     string `json:"summary"`
 }
 
 func NewOperation() *Operation {

@@ -14,7 +14,13 @@ linters:
     - unused
 
 issues:
+  max-same-issues: 0
+  max-issues-per-linter: 0
   exclude-rules:
+    - path: examples/
+      linters:
+        - gosec
+        - gochecknoglobals
     - path: _test\.go
       linters:
         - errcheck
@@ -31,7 +37,7 @@ linters-settings:
         allow:
           - $gostd
           - github.com/go-chi/chi/v5
-          - github.com/evgenymarkov/oasis/openapi3
+          - github.com/evgenymarkov/oasis
       test:
         files:
           - "$test"
