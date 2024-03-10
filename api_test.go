@@ -33,7 +33,10 @@ func TestAPIEmpty(t *testing.T) {
 			SetVersion("1.0.0"),
 	)
 
-	assert.Empty(t, router.Routes())
+	routes := router.Routes()
+	assert.Len(t, routes, 1)
+	assert.Nil(t, routes[0].SubRoutes)
+	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
 }
 
 func TestAPIWithOperations(t *testing.T) {
@@ -60,7 +63,10 @@ func TestAPIWithOperations(t *testing.T) {
 	api.Trace("/ping-trace", pingHandler, pingOperation)
 
 	routes := router.Routes()
-	assert.Len(t, routes, 9)
+	assert.Len(t, routes, 10)
+
+	assert.Nil(t, routes[0].SubRoutes)
+	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
 
 	methods := []string{
 		http.MethodGet,
