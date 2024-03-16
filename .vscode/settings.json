@@ -1,5 +1,6 @@
 {
   "go.lintTool": "golangci-lint",
   "go.lintOnSave": "workspace",
-  "go.lintFlags": ["--config=${workspaceFolder}/.golangci.yaml"]
+  "go.lintFlags": ["--config=${workspaceFolder}/.golangci.yaml"],
+  "files.associations": { "*.tmpl": "html" }
 }

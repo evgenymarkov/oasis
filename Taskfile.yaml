@@ -1,6 +1,10 @@
 version: "3"
 
 tasks:
+  fmt:
+    cmds:
+      - go fmt ./...
+
   lint:
     cmds:
       - golangci-lint run ./...
@@ -11,6 +15,30 @@ tasks:
 
   run-*:
     vars:
-      EXAMPLE: '{{index .MATCH 0}}'
+      EXAMPLE: "{{index .MATCH 0}}"
     cmds:
       - go run ./examples/{{.EXAMPLE}}
+
+  update-swagger-ui:
+    vars:
+      VERSION: "5.12.0" # https://github.com/swagger-api/swagger-ui/releases
+      BASE_URL: "https://github.com/swagger-api/swagger-ui/archive/refs/tags"
+    cmds:
+      # Create temporary directory for artifacts
+      - mkdir -p .tmp
+      # Clean temporary directory after updating
+      - defer: rm -r .tmp
+      # Remove old Swagger UI files
+      - rm -f ./rendering/static/*
+      # Load new Swagger UI bundle from GitHub
+      - curl -L {{.BASE_URL}}/v{{.VERSION}}.zip -o .tmp/swagger-ui.zip
+      # Unpack Swagger UI bundle to temporary directory
+      - unzip .tmp/swagger-ui.zip -d .tmp/
+      # Copy content of Swagger UI bundle files to static directory
+      - cp -r .tmp/swagger-ui-{{.VERSION}}/dist/ ./rendering/static/
+      # Remove files that are not needed for the Swagger UI to work
+      - rm ./rendering/static/index.html
+      - rm ./rendering/static/swagger-ui.js*
+      - rm ./rendering/static/swagger-ui-es-*
+      - rm ./rendering/static/favicon-16x16.png
+      - rm ./rendering/static/swagger-initializer.js

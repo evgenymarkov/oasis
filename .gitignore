@@ -11,3 +11,7 @@ Thumbs.db
 .vscode/*
 !.vscode/launch.json
 !.vscode/settings.json
+
+# Temporary files
+.tmp/
+__debug*

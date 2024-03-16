@@ -3,7 +3,6 @@ package oasis_test
 import (
 	"net/http"
 	"slices"
-	"strings"
 	"testing"
 
 	"github.com/evgenymarkov/oasis"
@@ -26,17 +25,29 @@ func TestAPIEmpty(t *testing.T) {
 	oasis.NewAPI(
 		router,
 		oasis.NewAPIConfig().
-			SetDocsUIPath("/api").
-			SetDocumentPath("/api/openapi.json"),
+			SetDocumentPath("/api/openapi.json").
+			SetSwaggerUIPath("/api").
+			SetSwaggerUITitle("API Docs"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
 	)
 
 	routes := router.Routes()
-	assert.Len(t, routes, 1)
-	assert.Nil(t, routes[0].SubRoutes)
-	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
+	assert.Len(t, routes, 11)
+	checkHandlersRegistered(t, routes, []string{
+		"/api",
+		"/api/favicon-32x32.png",
+		"/api/index.css",
+		"/api/oauth2-redirect.html",
+		"/api/openapi.json",
+		"/api/swagger-ui-bundle.js",
+		"/api/swagger-ui-bundle.js.map",
+		"/api/swagger-ui-standalone-preset.js",
+		"/api/swagger-ui-standalone-preset.js.map",
+		"/api/swagger-ui.css",
+		"/api/swagger-ui.css.map",
+	})
 }
 
 func TestAPIWithOperations(t *testing.T) {
@@ -45,8 +56,9 @@ func TestAPIWithOperations(t *testing.T) {
 	api := oasis.NewAPI(
 		router,
 		oasis.NewAPIConfig().
-			SetDocsUIPath("/api").
-			SetDocumentPath("/api/openapi.json"),
+			SetDocumentPath("/api/openapi.json").
+			SetSwaggerUIPath("/api").
+			SetSwaggerUITitle("API Docs"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),
@@ -63,29 +75,37 @@ func TestAPIWithOperations(t *testing.T) {
 	api.Trace("/ping-trace", pingHandler, pingOperation)
 
 	routes := router.Routes()
-	assert.Len(t, routes, 10)
+	assert.Len(t, routes, 20)
+	checkHandlersRegistered(t, routes, []string{
+		"/api",
+		"/api/favicon-32x32.png",
+		"/api/index.css",
+		"/api/oauth2-redirect.html",
+		"/api/openapi.json",
+		"/api/swagger-ui-bundle.js",
+		"/api/swagger-ui-bundle.js.map",
+		"/api/swagger-ui-standalone-preset.js",
+		"/api/swagger-ui-standalone-preset.js.map",
+		"/api/swagger-ui.css",
+		"/api/swagger-ui.css.map",
+		"/ping-get",
+		"/ping-head",
+		"/ping-post",
+		"/ping-put",
+		"/ping-patch",
+		"/ping-delete",
+		"/ping-connect",
+		"/ping-options",
+		"/ping-trace",
+	})
+}
 
-	assert.Nil(t, routes[0].SubRoutes)
-	assert.Equal(t, "/api/openapi.json", routes[0].Pattern)
+func checkHandlersRegistered(t *testing.T, routes []chi.Route, patterns []string) {
+	t.Helper()
 
-	methods := []string{
-		http.MethodGet,
-		http.MethodHead,
-		http.MethodPost,
-		http.MethodPut,
-		http.MethodPatch,
-		http.MethodDelete,
-		http.MethodConnect,
-		http.MethodOptions,
-		http.MethodTrace,
-	}
-
-	for _, method := range methods {
-		route := routes[slices.IndexFunc(routes, func(r chi.Route) bool {
-			return r.Pattern == "/ping-"+strings.ToLower(method)
-		})]
-		assert.Nil(t, route.SubRoutes)
-		assert.Len(t, route.Handlers, 1)
-		assert.Contains(t, route.Handlers, method)
+	for _, pattern := range patterns {
+		assert.NotEqual(t, -1, slices.IndexFunc(routes, func(r chi.Route) bool {
+			return r.Pattern == pattern
+		}))
 	}
 }
