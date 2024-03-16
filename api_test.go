@@ -1,15 +1,20 @@
 package oasis_test
 
 import (
+	"context"
 	"net/http"
-	"slices"
 	"testing"
 
 	"github.com/evgenymarkov/oasis"
 	"github.com/evgenymarkov/oasis/openapi3"
-	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+type endpoint struct {
+	method  string
+	pattern string
+}
 
 var pingOperation = openapi3.NewOperation().
 	SetOperationID("ping").
@@ -20,10 +25,10 @@ func pingHandler(response http.ResponseWriter, _ *http.Request) {
 }
 
 func TestAPIEmpty(t *testing.T) {
-	router := chi.NewRouter()
+	mux := http.NewServeMux()
 
 	oasis.NewAPI(
-		router,
+		mux,
 		oasis.NewAPIConfig().
 			SetDocumentPath("/api/openapi.json").
 			SetSwaggerUIPath("/api").
@@ -33,28 +38,26 @@ func TestAPIEmpty(t *testing.T) {
 			SetVersion("1.0.0"),
 	)
 
-	routes := router.Routes()
-	assert.Len(t, routes, 11)
-	checkHandlersRegistered(t, routes, []string{
-		"/api",
-		"/api/favicon-32x32.png",
-		"/api/index.css",
-		"/api/oauth2-redirect.html",
-		"/api/openapi.json",
-		"/api/swagger-ui-bundle.js",
-		"/api/swagger-ui-bundle.js.map",
-		"/api/swagger-ui-standalone-preset.js",
-		"/api/swagger-ui-standalone-preset.js.map",
-		"/api/swagger-ui.css",
-		"/api/swagger-ui.css.map",
+	checkHandlersRegistered(t, mux, []endpoint{
+		{method: http.MethodGet, pattern: "/api"},
+		{method: http.MethodGet, pattern: "/api/favicon-32x32.png"},
+		{method: http.MethodGet, pattern: "/api/index.css"},
+		{method: http.MethodGet, pattern: "/api/oauth2-redirect.html"},
+		{method: http.MethodGet, pattern: "/api/openapi.json"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js.map"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js.map"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui.css"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui.css.map"},
 	})
 }
 
 func TestAPIWithOperations(t *testing.T) {
-	router := chi.NewRouter()
+	mux := http.NewServeMux()
 
 	api := oasis.NewAPI(
-		router,
+		mux,
 		oasis.NewAPIConfig().
 			SetDocumentPath("/api/openapi.json").
 			SetSwaggerUIPath("/api").
@@ -74,38 +77,45 @@ func TestAPIWithOperations(t *testing.T) {
 	api.Options("/ping-options", pingHandler, pingOperation)
 	api.Trace("/ping-trace", pingHandler, pingOperation)
 
-	routes := router.Routes()
-	assert.Len(t, routes, 20)
-	checkHandlersRegistered(t, routes, []string{
-		"/api",
-		"/api/favicon-32x32.png",
-		"/api/index.css",
-		"/api/oauth2-redirect.html",
-		"/api/openapi.json",
-		"/api/swagger-ui-bundle.js",
-		"/api/swagger-ui-bundle.js.map",
-		"/api/swagger-ui-standalone-preset.js",
-		"/api/swagger-ui-standalone-preset.js.map",
-		"/api/swagger-ui.css",
-		"/api/swagger-ui.css.map",
-		"/ping-get",
-		"/ping-head",
-		"/ping-post",
-		"/ping-put",
-		"/ping-patch",
-		"/ping-delete",
-		"/ping-connect",
-		"/ping-options",
-		"/ping-trace",
+	checkHandlersRegistered(t, mux, []endpoint{
+		{method: http.MethodGet, pattern: "/api"},
+		{method: http.MethodGet, pattern: "/api/favicon-32x32.png"},
+		{method: http.MethodGet, pattern: "/api/index.css"},
+		{method: http.MethodGet, pattern: "/api/oauth2-redirect.html"},
+		{method: http.MethodGet, pattern: "/api/openapi.json"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js.map"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js.map"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui.css"},
+		{method: http.MethodGet, pattern: "/api/swagger-ui.css.map"},
+		{method: http.MethodGet, pattern: "/ping-get"},
+		{method: http.MethodHead, pattern: "/ping-head"},
+		{method: http.MethodPost, pattern: "/ping-post"},
+		{method: http.MethodPut, pattern: "/ping-put"},
+		{method: http.MethodPatch, pattern: "/ping-patch"},
+		{method: http.MethodDelete, pattern: "/ping-delete"},
+		{method: http.MethodConnect, pattern: "/ping-connect"},
+		{method: http.MethodOptions, pattern: "/ping-options"},
+		{method: http.MethodTrace, pattern: "/ping-trace"},
 	})
 }
 
-func checkHandlersRegistered(t *testing.T, routes []chi.Route, patterns []string) {
+func checkHandlersRegistered(t *testing.T, mux *http.ServeMux, endpoints []endpoint) {
 	t.Helper()
 
-	for _, pattern := range patterns {
-		assert.NotEqual(t, -1, slices.IndexFunc(routes, func(r chi.Route) bool {
-			return r.Pattern == pattern
-		}))
+	for _, endpoint := range endpoints {
+		t.Run(endpoint.method+endpoint.pattern, func(t *testing.T) {
+			request, requestErr := http.NewRequestWithContext(
+				context.TODO(),
+				endpoint.method,
+				endpoint.pattern,
+				nil,
+			)
+			require.NoError(t, requestErr)
+
+			_, internalPattern := mux.Handler(request)
+			assert.Equal(t, endpoint.method+" "+endpoint.pattern, internalPattern)
+		})
 	}
 }

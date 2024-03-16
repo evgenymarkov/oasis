@@ -36,13 +36,11 @@ linters-settings:
           - "!$test"
         allow:
           - $gostd
-          - github.com/go-chi/chi/v5
           - github.com/evgenymarkov/oasis
       test:
         files:
           - "$test"
         allow:
           - $gostd
-          - github.com/go-chi/chi/v5
           - github.com/stretchr/testify
           - github.com/evgenymarkov/oasis
