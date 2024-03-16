@@ -26,6 +26,21 @@ func NewAPI(
 		rendering.NewDocumentHandler(document),
 	)
 
+	router.Get(
+		config.SwaggerUIPath,
+		rendering.NewSwaggerUIHandler(rendering.SwaggerUIConfig{
+			BaseURL:   config.SwaggerUIPath,
+			PageTitle: config.SwaggerUITitle,
+		}),
+	)
+
+	for _, staticFile := range rendering.GetSwaggerUIStaticFiles() {
+		router.HandleFunc(
+			config.SwaggerUIPath+"/"+staticFile,
+			rendering.NewSwaggerUIStaticHandler(staticFile),
+		)
+	}
+
 	return &API{
 		router:   router,
 		config:   config,

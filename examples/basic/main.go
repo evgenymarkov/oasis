@@ -22,8 +22,9 @@ func main() {
 	api := oasis.NewAPI(
 		router,
 		oasis.NewAPIConfig().
-			SetDocsUIPath("/api").
-			SetDocumentPath("/api/openapi.json"),
+			SetDocumentPath("/api/openapi.json").
+			SetSwaggerUIPath("/api").
+			SetSwaggerUITitle("API Docs"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
 			SetVersion("1.0.0"),

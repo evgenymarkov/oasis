@@ -8,21 +8,21 @@ import (
 	"github.com/evgenymarkov/oasis/openapi3"
 )
 
-var errDocumentMarshal = errors.New("failed to marshal document")
+var errDocumentRender = errors.New("failed to render document")
 
 func NewDocumentHandler(document *openapi3.Document) http.HandlerFunc {
 	var (
-		marshalErr    error
-		documentBytes []byte
+		documentBytes     []byte
+		documentRenderErr error
 	)
 
 	return func(response http.ResponseWriter, _ *http.Request) {
-		if marshalErr == nil && documentBytes == nil {
-			documentBytes, marshalErr = json.Marshal(document)
+		if documentBytes == nil && documentRenderErr == nil {
+			documentBytes, documentRenderErr = json.Marshal(document)
 		}
 
-		if marshalErr != nil {
-			message := errors.Join(errDocumentMarshal, marshalErr).Error()
+		if documentRenderErr != nil {
+			message := errors.Join(errDocumentRender, documentRenderErr).Error()
 			http.Error(response, message, http.StatusInternalServerError)
 
 			return
