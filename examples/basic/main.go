@@ -5,7 +5,6 @@ import (
 
 	"github.com/evgenymarkov/oasis"
 	"github.com/evgenymarkov/oasis/openapi3"
-	"github.com/go-chi/chi/v5"
 )
 
 const (
@@ -15,12 +14,12 @@ const (
 )
 
 func main() {
-	// Create router
-	router := chi.NewRouter()
+	// Create multiplexer
+	mux := http.NewServeMux()
 
 	// Create API wrapper
 	api := oasis.NewAPI(
-		router,
+		mux,
 		oasis.NewAPIConfig().
 			SetDocumentPath("/api/openapi.json").
 			SetSwaggerUIPath("/api").
@@ -38,7 +37,7 @@ func main() {
 	)
 
 	// Start handling incoming requests
-	if startErr := http.ListenAndServe(serverAddr, router); startErr != nil {
+	if startErr := http.ListenAndServe(serverAddr, mux); startErr != nil {
 		panic(startErr)
 	}
 }

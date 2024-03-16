@@ -5,29 +5,28 @@ import (
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/evgenymarkov/oasis/rendering"
-	"github.com/go-chi/chi/v5"
 )
 
-// API struct is a wrapper on top of router for registering operations.
+// API struct is a wrapper on top of multiplexer for registering operations.
 type API struct {
-	router   chi.Router
+	mux      *http.ServeMux
 	config   *APIConfig
 	document *openapi3.Document
 }
 
 // NewAPI method creates new API struct and fills it up.
 func NewAPI(
-	router chi.Router,
+	mux *http.ServeMux,
 	config *APIConfig,
 	document *openapi3.Document,
 ) *API {
-	router.Get(
-		config.DocumentPath,
+	mux.HandleFunc(
+		http.MethodGet+" "+config.DocumentPath,
 		rendering.NewDocumentHandler(document),
 	)
 
-	router.Get(
-		config.SwaggerUIPath,
+	mux.HandleFunc(
+		http.MethodGet+" "+config.SwaggerUIPath,
 		rendering.NewSwaggerUIHandler(rendering.SwaggerUIConfig{
 			BaseURL:   config.SwaggerUIPath,
 			PageTitle: config.SwaggerUITitle,
@@ -35,14 +34,14 @@ func NewAPI(
 	)
 
 	for _, staticFile := range rendering.GetSwaggerUIStaticFiles() {
-		router.HandleFunc(
-			config.SwaggerUIPath+"/"+staticFile,
+		mux.HandleFunc(
+			http.MethodGet+" "+config.SwaggerUIPath+"/"+staticFile,
 			rendering.NewSwaggerUIStaticHandler(staticFile),
 		)
 	}
 
 	return &API{
-		router:   router,
+		mux:      mux,
 		config:   config,
 		document: document,
 	}
@@ -55,7 +54,7 @@ func (a *API) Get(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Get(pattern, handler)
+	a.mux.HandleFunc(http.MethodGet+" "+pattern, handler)
 }
 
 // Head method registers an handler for HTTP HEAD requests matching the pattern
@@ -65,7 +64,7 @@ func (a *API) Head(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Head(pattern, handler)
+	a.mux.HandleFunc(http.MethodHead+" "+pattern, handler)
 }
 
 // Post method registers an handler for HTTP POST requests matching the pattern
@@ -75,7 +74,7 @@ func (a *API) Post(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Post(pattern, handler)
+	a.mux.HandleFunc(http.MethodPost+" "+pattern, handler)
 }
 
 // Put method registers an handler for HTTP PUT requests matching the pattern
@@ -85,7 +84,7 @@ func (a *API) Put(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Put(pattern, handler)
+	a.mux.HandleFunc(http.MethodPut+" "+pattern, handler)
 }
 
 // Patch method registers an handler for HTTP PATCH requests matching the pattern
@@ -95,7 +94,7 @@ func (a *API) Patch(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Patch(pattern, handler)
+	a.mux.HandleFunc(http.MethodPatch+" "+pattern, handler)
 }
 
 // Delete method registers an handler for HTTP DELETE requests matching the pattern
@@ -105,7 +104,7 @@ func (a *API) Delete(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Delete(pattern, handler)
+	a.mux.HandleFunc(http.MethodDelete+" "+pattern, handler)
 }
 
 // Connect method registers an handler for HTTP CONNECT requests matching the pattern
@@ -115,7 +114,7 @@ func (a *API) Connect(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Connect(pattern, handler)
+	a.mux.HandleFunc(http.MethodConnect+" "+pattern, handler)
 }
 
 // Options method registers an handler for HTTP OPTIONS requests matching the pattern
@@ -125,7 +124,7 @@ func (a *API) Options(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Options(pattern, handler)
+	a.mux.HandleFunc(http.MethodOptions+" "+pattern, handler)
 }
 
 // Trace method registers an handler for HTTP TRACE requests matching the pattern
@@ -135,5 +134,5 @@ func (a *API) Trace(
 	handler http.HandlerFunc,
 	operation *openapi3.Operation,
 ) {
-	a.router.Trace(pattern, handler)
+	a.mux.HandleFunc(http.MethodTrace+" "+pattern, handler)
 }
