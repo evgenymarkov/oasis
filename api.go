@@ -48,6 +48,12 @@ func NewAPI(
 	}
 }
 
+// Document method returns pointer to serializable openapi3.Document.
+// This document can be saved in the file system and used for code generation.
+func (a *API) Document() *openapi3.Document {
+	return a.document
+}
+
 // Get method registers an handler for HTTP GET requests matching the pattern
 // and updates operations table in OpenAPI document.
 func (a *API) Get(

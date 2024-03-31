@@ -1,18 +1,18 @@
 {
   "configurations": [
     {
-      "name": "Run examples/basic",
+      "name": "Run examples/basic/cmd/dump-spec",
       "type": "go",
       "mode": "auto",
       "request": "launch",
-      "program": "${workspaceFolder}/examples/basic"
+      "program": "${workspaceFolder}/examples/basic/cmd/dump-spec"
     },
     {
-      "name": "Run examples/debug",
+      "name": "Run examples/basic/cmd/start-server",
       "type": "go",
       "mode": "auto",
       "request": "launch",
-      "program": "${workspaceFolder}/examples/debug"
+      "program": "${workspaceFolder}/examples/basic/cmd/start-server"
     }
   ]
 }
