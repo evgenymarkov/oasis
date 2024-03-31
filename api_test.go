@@ -46,8 +46,6 @@ func TestAPIEmpty(t *testing.T) {
 		{method: http.MethodGet, pattern: "/api/openapi.json"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js.map"},
-		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js"},
-		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js.map"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui.css"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui.css.map"},
 	})
@@ -85,8 +83,6 @@ func TestAPIWithOperations(t *testing.T) {
 		{method: http.MethodGet, pattern: "/api/openapi.json"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui-bundle.js.map"},
-		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js"},
-		{method: http.MethodGet, pattern: "/api/swagger-ui-standalone-preset.js.map"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui.css"},
 		{method: http.MethodGet, pattern: "/api/swagger-ui.css.map"},
 		{method: http.MethodGet, pattern: "/ping-get"},

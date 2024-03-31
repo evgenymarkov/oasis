@@ -21,7 +21,7 @@ tasks:
 
   update-swagger-ui:
     vars:
-      VERSION: "5.12.0" # https://github.com/swagger-api/swagger-ui/releases
+      VERSION: "5.13.0" # https://github.com/swagger-api/swagger-ui/releases
       BASE_URL: "https://github.com/swagger-api/swagger-ui/archive/refs/tags"
     cmds:
       # Create temporary directory for artifacts
@@ -42,3 +42,4 @@ tasks:
       - rm ./rendering/static/swagger-ui-es-*
       - rm ./rendering/static/favicon-16x16.png
       - rm ./rendering/static/swagger-initializer.js
+      - rm ./rendering/static/swagger-ui-standalone-preset.js*

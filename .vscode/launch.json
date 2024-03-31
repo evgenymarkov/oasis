@@ -6,6 +6,13 @@
       "mode": "auto",
       "request": "launch",
       "program": "${workspaceFolder}/examples/basic"
+    },
+    {
+      "name": "Run examples/debug",
+      "type": "go",
+      "mode": "auto",
+      "request": "launch",
+      "program": "${workspaceFolder}/examples/debug"
     }
   ]
 }
