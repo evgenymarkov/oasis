@@ -17,8 +17,6 @@ var staticFiles = []string{
 	"oauth2-redirect.html",
 	"swagger-ui-bundle.js",
 	"swagger-ui-bundle.js.map",
-	"swagger-ui-standalone-preset.js",
-	"swagger-ui-standalone-preset.js.map",
 	"swagger-ui.css",
 	"swagger-ui.css.map",
 }

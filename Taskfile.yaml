@@ -42,3 +42,4 @@ tasks:
       - rm ./rendering/static/swagger-ui-es-*
       - rm ./rendering/static/favicon-16x16.png
       - rm ./rendering/static/swagger-initializer.js
+      - rm ./rendering/static/swagger-ui-standalone-preset.js*
