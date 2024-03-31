@@ -15,7 +15,12 @@ type Document struct {
 	// 	Title:   "API",
 	//	Version: "0.0.1",
 	// }
-	Info DocumentInfo `json:"info"`
+	Info *DocumentInfo `json:"info"`
+
+	// Additional meta information of the OpenAPI document.
+	//
+	// Default: []
+	Tags []*Tag `json:"tags"`
 }
 
 // DocumentInfo provides metadata about the API.
@@ -37,10 +42,11 @@ type DocumentInfo struct {
 func NewDocument() *Document {
 	return &Document{
 		OpenAPI: "3.1.0",
-		Info: DocumentInfo{
+		Info: &DocumentInfo{
 			Title:   "API",
 			Version: "0.0.1",
 		},
+		Tags: make([]*Tag, 0),
 	}
 }
 
@@ -54,6 +60,13 @@ func (c *Document) SetTitle(title string) *Document {
 // SetVersion method sets OpenAPI document version.
 func (c *Document) SetVersion(version string) *Document {
 	c.Info.Version = version
+
+	return c
+}
+
+// SetTags method sets additional meta information to OpenAPI document.
+func (c *Document) SetTags(tags ...*Tag) *Document {
+	c.Tags = append(c.Tags, tags...)
 
 	return c
 }
