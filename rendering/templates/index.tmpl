@@ -13,13 +13,20 @@
     <script src="{{.BaseURL}}/swagger-ui-bundle.js"></script>
     <script src="{{.BaseURL}}/swagger-ui-standalone-preset.js"></script>
     <script>
+      function HideTopBarPlugin() {
+        return {
+          components: { Topbar: () => null },
+        };
+      }
+    </script>
+    <script>
       window.onload = function () {
         window.ui = SwaggerUIBundle({
-          url: "https://petstore.swagger.io/v2/swagger.json",
+          url: "https://petstore3.swagger.io/api/v3/openapi.json",
           dom_id: "#swagger-ui",
           deepLinking: true,
           layout: "StandaloneLayout",
-          plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+          plugins: [SwaggerUIBundle.plugins.DownloadUrl, HideTopBarPlugin],
           presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
         });
       };
