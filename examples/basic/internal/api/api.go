@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"net/http"
@@ -7,17 +7,7 @@ import (
 	"github.com/evgenymarkov/oasis/openapi3"
 )
 
-const (
-	serverHost = "localhost"
-	serverPort = "3000"
-	serverAddr = serverHost + ":" + serverPort
-)
-
-func main() {
-	// Create multiplexer
-	mux := http.NewServeMux()
-
-	// Create API wrapper
+func NewAPI(mux *http.ServeMux) *oasis.API {
 	api := oasis.NewAPI(
 		mux,
 		oasis.NewAPIConfig().
@@ -29,15 +19,11 @@ func main() {
 			SetVersion("1.0.0"),
 	)
 
-	// Register operations
 	api.Get(
 		"/greeting/{name}",
 		GetGreetingHandler,
 		GetGreetingOperation,
 	)
 
-	// Start handling incoming requests
-	if startErr := http.ListenAndServe(serverAddr, mux); startErr != nil {
-		panic(startErr)
-	}
+	return api
 }

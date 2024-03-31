@@ -24,7 +24,7 @@ func pingHandler(response http.ResponseWriter, _ *http.Request) {
 	response.Write([]byte("pong"))
 }
 
-func TestAPIEmpty(t *testing.T) {
+func TestEmptyAPIHandlers(t *testing.T) {
 	mux := http.NewServeMux()
 
 	oasis.NewAPI(
@@ -51,7 +51,7 @@ func TestAPIEmpty(t *testing.T) {
 	})
 }
 
-func TestAPIWithOperations(t *testing.T) {
+func TestAPIWithOperationsHandlers(t *testing.T) {
 	mux := http.NewServeMux()
 
 	api := oasis.NewAPI(

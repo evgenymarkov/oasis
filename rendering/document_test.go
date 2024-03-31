@@ -17,7 +17,22 @@ import (
 func TestDocumentHandler(t *testing.T) {
 	document := openapi3.NewDocument().
 		SetTitle("Greeting API").
-		SetVersion("1.0.0")
+		SetVersion("1.0.0").
+		SetTags(
+			openapi3.NewTag("orders").
+				SetDescription("Orders operations").
+				SetExternalDocs(
+					openapi3.NewExternalDocumentation("https://market.yandex.ru").
+						SetDescription("E-commerce platform"),
+				),
+			openapi3.NewTag("payments").
+				SetDescription("Payments operations").
+				SetExternalDocs(
+					openapi3.NewExternalDocumentation("https://bank.yandex.ru").
+						SetDescription("New fancy digital bank"),
+				),
+		)
+
 	documentHandler := rendering.NewDocumentHandler(document)
 
 	testServer := httptest.NewServer(documentHandler)
@@ -46,6 +61,24 @@ func TestDocumentHandler(t *testing.T) {
 		"info": map[string]any{
 			"title":   "Greeting API",
 			"version": "1.0.0",
+		},
+		"tags": []any{
+			map[string]any{
+				"name":        "orders",
+				"description": "Orders operations",
+				"externalDocs": map[string]any{
+					"url":         "https://market.yandex.ru",
+					"description": "E-commerce platform",
+				},
+			},
+			map[string]any{
+				"name":        "payments",
+				"description": "Payments operations",
+				"externalDocs": map[string]any{
+					"url":         "https://bank.yandex.ru",
+					"description": "New fancy digital bank",
+				},
+			},
 		},
 	})
 	require.NoError(t, wantErr)

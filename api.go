@@ -30,6 +30,7 @@ func NewAPI(
 		rendering.NewSwaggerUIHandler(rendering.SwaggerUIConfig{
 			BaseURL:   config.SwaggerUIPath,
 			PageTitle: config.SwaggerUITitle,
+			Document:  document,
 		}),
 	)
 
@@ -45,6 +46,12 @@ func NewAPI(
 		config:   config,
 		document: document,
 	}
+}
+
+// Document method returns pointer to serializable openapi3.Document.
+// This document can be saved in the file system and used for code generation.
+func (a *API) Document() *openapi3.Document {
+	return a.document
 }
 
 // Get method registers an handler for HTTP GET requests matching the pattern

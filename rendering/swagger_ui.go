@@ -4,20 +4,24 @@ import (
 	"bytes"
 	"embed"
 	"errors"
+	"html/template"
 	"io/fs"
 	"net/http"
 	"strings"
-	"text/template"
+
+	"github.com/evgenymarkov/oasis/openapi3"
 )
 
 type SwaggerUIConfig struct {
 	BaseURL   string
 	PageTitle string
+	Document  *openapi3.Document
 }
 
 type indexRenderData struct {
-	BaseURL string
-	Title   string
+	BaseURL  string
+	Title    string
+	Document *openapi3.Document
 }
 
 var (
@@ -52,8 +56,9 @@ func NewSwaggerUIHandler(config SwaggerUIConfig) http.HandlerFunc {
 		if indexBytes == nil && indexRenderErr == nil {
 			indexBuffer := bytes.Buffer{}
 			indexRenderErr = indexTemplate.Execute(&indexBuffer, indexRenderData{
-				BaseURL: config.BaseURL,
-				Title:   config.PageTitle,
+				BaseURL:  config.BaseURL,
+				Title:    config.PageTitle,
+				Document: config.Document,
 			})
 
 			if indexRenderErr == nil {

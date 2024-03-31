@@ -11,10 +11,15 @@
   <body>
     <div id="swagger-ui"></div>
     <script src="{{.BaseURL}}/swagger-ui-bundle.js"></script>
+    <script id="openapi-document" type="application/json">
+      {{.Document}}
+    </script>
     <script>
-      window.onload = function () {
+      const openapiDocument = document.querySelector("#openapi-document");
+      const apiSpecification = JSON.parse(openapiDocument.textContent);
+      window.onload = () => {
         window.ui = SwaggerUIBundle({
-          url: "https://petstore3.swagger.io/api/v3/openapi.json",
+          spec: apiSpecification,
           dom_id: "#swagger-ui",
           deepLinking: true,
           presets: [SwaggerUIBundle.presets.apis],
