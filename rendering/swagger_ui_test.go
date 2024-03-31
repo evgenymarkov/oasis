@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/evgenymarkov/oasis/rendering"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -22,6 +23,10 @@ var staticFiles = []string{
 }
 
 func TestSwaggerUIHandler(t *testing.T) {
+	document := openapi3.NewDocument().
+		SetTitle("Greeting API").
+		SetVersion("1.0.0")
+
 	request, requestErr := http.NewRequestWithContext(
 		context.TODO(),
 		http.MethodGet,
@@ -34,6 +39,7 @@ func TestSwaggerUIHandler(t *testing.T) {
 	handler := rendering.NewSwaggerUIHandler(rendering.SwaggerUIConfig{
 		BaseURL:   "/api",
 		PageTitle: "API Docs",
+		Document:  document,
 	})
 	handler.ServeHTTP(response, request)
 

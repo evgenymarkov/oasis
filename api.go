@@ -30,6 +30,7 @@ func NewAPI(
 		rendering.NewSwaggerUIHandler(rendering.SwaggerUIConfig{
 			BaseURL:   config.SwaggerUIPath,
 			PageTitle: config.SwaggerUITitle,
+			Document:  document,
 		}),
 	)
 
