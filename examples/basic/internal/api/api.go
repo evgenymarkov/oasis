@@ -16,7 +16,15 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 			SetSwaggerUITitle("API Docs"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
-			SetVersion("1.0.0"),
+			SetVersion("1.0.0").
+			SetTags(
+				openapi3.NewTag("greetings").
+					SetDescription("Greetings operations").
+					SetExternalDocs(
+						openapi3.NewExternalDocumentation(wikiHelloURL).
+							SetDescription(wikiHelloDescription),
+					),
+			),
 	)
 
 	api.Get(
