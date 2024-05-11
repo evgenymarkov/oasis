@@ -18,7 +18,12 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 			SetTitle("Greeting API").
 			SetVersion("1.0.0").
 			SetSummary("API for greetings").
-			SetDescription("_Oasis_ is a library for Go web apps").
+			SetDescription(apiDescription).
+			SetTermsOfService(apiTermsOfServiceURL).
+			SetExternalDocs(
+				openapi3.NewExternalDocumentation(apiDocsURL).
+					SetDescription(apiDocsDescription),
+			).
 			SetTags(
 				openapi3.NewTag("greetings").
 					SetDescription("Greetings operations").
@@ -26,10 +31,6 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 						openapi3.NewExternalDocumentation(wikiHelloURL).
 							SetDescription(wikiHelloDescription),
 					),
-			).
-			SetExternalDocs(
-				openapi3.NewExternalDocumentation(apiDocsURL).
-					SetDescription(apiDocsDescription),
 			),
 	)
 

@@ -16,10 +16,12 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Empty(t, document.Tags)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -46,10 +48,12 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "Greeting API", document.Info.Title)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Empty(t, document.Tags)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -76,10 +80,12 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "1.0.0", document.Info.Version)
-			assert.Empty(t, document.Tags)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -106,10 +112,12 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "API for greetings", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Empty(t, document.Tags)
+			assert.Equal(t, "API for greetings", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -137,11 +145,12 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Empty(t, document.Tags)
+			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -151,6 +160,88 @@ func TestDocument(t *testing.T) {
 					"title":       "API",
 					"description": "_Oasis_ is a library for Go web apps",
 					"version":     "0.0.1",
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
+	t.Run("WithTermsOfService", func(t *testing.T) {
+		document := openapi3.NewDocument().
+			SetTermsOfService("https://yandex.com/legal/rules/")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "https://yandex.com/legal/rules/", document.Info.TermsOfService)
+			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":          "API",
+					"termsOfService": "https://yandex.com/legal/rules/",
+					"version":        "0.0.1",
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
+	t.Run("WithExternalDocs", func(t *testing.T) {
+		wikiHelloURL := "https://wikipedia.org/wiki/Hello,_world!"
+		wikiHelloDescription := "Free online encyclopedia, created and edited by volunteers"
+
+		document := openapi3.NewDocument().
+			SetExternalDocs(
+				openapi3.NewExternalDocumentation(wikiHelloURL).
+					SetDescription(wikiHelloDescription),
+			)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Equal(
+				t,
+				&openapi3.ExternalDocumentation{
+					URL:         wikiHelloURL,
+					Description: wikiHelloDescription,
+				},
+				document.ExternalDocs,
+			)
+			assert.Empty(t, document.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":   "API",
+					"version": "0.0.1",
+				},
+				"externalDocs": map[string]any{
+					"url":         wikiHelloURL,
+					"description": wikiHelloDescription,
 				},
 				"tags": []any{},
 			})
@@ -182,8 +273,11 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.ExternalDocs)
 			assert.Equal(
 				t,
 				[]*openapi3.Tag{
@@ -228,53 +322,6 @@ func TestDocument(t *testing.T) {
 							"description": "New fancy digital bank",
 						},
 					},
-				},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
-		})
-	})
-
-	t.Run("WithExternalDocs", func(t *testing.T) {
-		wikiHelloURL := "https://wikipedia.org/wiki/Hello,_world!"
-		wikiHelloDescription := "Free online encyclopedia, created and edited by volunteers"
-
-		document := openapi3.NewDocument().
-			SetExternalDocs(
-				openapi3.NewExternalDocumentation(wikiHelloURL).
-					SetDescription(wikiHelloDescription),
-			)
-
-		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Empty(t, document.Tags)
-			assert.Equal(
-				t,
-				&openapi3.ExternalDocumentation{
-					URL:         wikiHelloURL,
-					Description: wikiHelloDescription,
-				},
-				document.ExternalDocs,
-			)
-		})
-
-		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
-				},
-				"tags": []any{},
-				"externalDocs": map[string]any{
-					"url":         wikiHelloURL,
-					"description": wikiHelloDescription,
 				},
 			})
 			gotBytes, gotErr := json.Marshal(document)

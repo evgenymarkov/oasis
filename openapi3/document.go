@@ -17,13 +17,15 @@ type Document struct {
 	// }
 	Info *DocumentInfo `json:"info"`
 
+	// Additional external documentation for the OpenAPI document.
+	//
+	// Default: nil
+	ExternalDocs *ExternalDocumentation `json:"externalDocs,omitempty"`
+
 	// Additional meta information of the OpenAPI document.
 	//
 	// Default: []
 	Tags []*Tag `json:"tags"`
-
-	// Additional external documentation for the OpenAPI document.
-	ExternalDocs *ExternalDocumentation `json:"externalDocs,omitempty"`
 }
 
 // DocumentInfo provides metadata about the API.
@@ -50,6 +52,12 @@ type DocumentInfo struct {
 	//
 	// Default: ""
 	Description string `json:"description,omitempty"`
+
+	// A URL to the Terms of Service for the API.
+	// This MUST be in the form of a URL.
+	//
+	// Default: ""
+	TermsOfService string `json:"termsOfService,omitempty"`
 }
 
 // NewDocument creates new OpenAPI document with default values.
@@ -57,13 +65,14 @@ func NewDocument() *Document {
 	return &Document{
 		OpenAPI: "3.1.0",
 		Info: &DocumentInfo{
-			Title:       "API",
-			Version:     "0.0.1",
-			Summary:     "",
-			Description: "",
+			Title:          "API",
+			Version:        "0.0.1",
+			Summary:        "",
+			Description:    "",
+			TermsOfService: "",
 		},
-		Tags:         make([]*Tag, 0),
 		ExternalDocs: nil,
+		Tags:         make([]*Tag, 0),
 	}
 }
 
@@ -95,9 +104,9 @@ func (c *Document) SetDescription(description string) *Document {
 	return c
 }
 
-// SetTags method sets additional meta information to OpenAPI document.
-func (c *Document) SetTags(tags ...*Tag) *Document {
-	c.Tags = append(c.Tags, tags...)
+// SetTermsOfService method sets Terms of Service for the API.
+func (c *Document) SetTermsOfService(termsURL string) *Document {
+	c.Info.TermsOfService = termsURL
 
 	return c
 }
@@ -105,6 +114,13 @@ func (c *Document) SetTags(tags ...*Tag) *Document {
 // SetExternalDocs sets external documentation link to OpenAPI document.
 func (c *Document) SetExternalDocs(externalDocs *ExternalDocumentation) *Document {
 	c.ExternalDocs = externalDocs
+
+	return c
+}
+
+// SetTags method sets additional meta information to OpenAPI document.
+func (c *Document) SetTags(tags ...*Tag) *Document {
+	c.Tags = append(c.Tags, tags...)
 
 	return c
 }
