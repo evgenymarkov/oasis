@@ -22,13 +22,13 @@ func TestDocumentHandler(t *testing.T) {
 			openapi3.NewTag("orders").
 				SetDescription("Orders operations").
 				SetExternalDocs(
-					openapi3.NewExternalDocumentation("https://market.yandex.ru").
+					openapi3.NewExternalDocumentation("https://market.example.com").
 						SetDescription("E-commerce platform"),
 				),
 			openapi3.NewTag("payments").
 				SetDescription("Payments operations").
 				SetExternalDocs(
-					openapi3.NewExternalDocumentation("https://bank.yandex.ru").
+					openapi3.NewExternalDocumentation("https://bank.example.com").
 						SetDescription("New fancy digital bank"),
 				),
 		)
@@ -67,7 +67,7 @@ func TestDocumentHandler(t *testing.T) {
 				"name":        "orders",
 				"description": "Orders operations",
 				"externalDocs": map[string]any{
-					"url":         "https://market.yandex.ru",
+					"url":         "https://market.example.com",
 					"description": "E-commerce platform",
 				},
 			},
@@ -75,7 +75,7 @@ func TestDocumentHandler(t *testing.T) {
 				"name":        "payments",
 				"description": "Payments operations",
 				"externalDocs": map[string]any{
-					"url":         "https://bank.yandex.ru",
+					"url":         "https://bank.example.com",
 					"description": "New fancy digital bank",
 				},
 			},

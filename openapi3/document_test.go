@@ -178,7 +178,7 @@ func TestDocument(t *testing.T) {
 
 	t.Run("WithTermsOfService", func(t *testing.T) {
 		document := openapi3.NewDocument().
-			SetTermsOfService("https://yandex.com/legal/rules/")
+			SetTermsOfService("https://example.com/legal/rules/")
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
@@ -186,7 +186,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "https://yandex.com/legal/rules/", document.Info.TermsOfService)
+			assert.Equal(t, "https://example.com/legal/rules/", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
@@ -197,7 +197,7 @@ func TestDocument(t *testing.T) {
 				"openapi": "3.1.0",
 				"info": map[string]any{
 					"title":          "API",
-					"termsOfService": "https://yandex.com/legal/rules/",
+					"termsOfService": "https://example.com/legal/rules/",
 					"version":        "0.0.1",
 				},
 				"tags": []any{},
@@ -214,8 +214,8 @@ func TestDocument(t *testing.T) {
 		document := openapi3.NewDocument().
 			SetContact(
 				openapi3.NewContact("API Support").
-					SetURL("https://yandex.com/support").
-					SetEmail("greeting-api@support.yandex.com"),
+					SetURL("https://example.com/support").
+					SetEmail("greeting-api@support.example.com"),
 			)
 
 		t.Run("Values", func(t *testing.T) {
@@ -229,8 +229,8 @@ func TestDocument(t *testing.T) {
 				t,
 				&openapi3.Contact{
 					Name:  "API Support",
-					URL:   "https://yandex.com/support",
-					Email: "greeting-api@support.yandex.com",
+					URL:   "https://example.com/support",
+					Email: "greeting-api@support.example.com",
 				},
 				document.Info.Contact,
 			)
@@ -246,8 +246,8 @@ func TestDocument(t *testing.T) {
 					"version": "0.0.1",
 					"contact": map[string]any{
 						"name":  "API Support",
-						"url":   "https://yandex.com/support",
-						"email": "greeting-api@support.yandex.com",
+						"url":   "https://example.com/support",
+						"email": "greeting-api@support.example.com",
 					},
 				},
 				"tags": []any{},
@@ -316,13 +316,13 @@ func TestDocument(t *testing.T) {
 				openapi3.NewTag("orders").
 					SetDescription("Orders operations").
 					SetExternalDocs(
-						openapi3.NewExternalDocumentation("https://market.yandex.ru").
+						openapi3.NewExternalDocumentation("https://market.example.com").
 							SetDescription("E-commerce platform"),
 					),
 				openapi3.NewTag("payments").
 					SetDescription("Payments operations").
 					SetExternalDocs(
-						openapi3.NewExternalDocumentation("https://bank.yandex.ru").
+						openapi3.NewExternalDocumentation("https://bank.example.com").
 							SetDescription("New fancy digital bank"),
 					),
 			)
@@ -342,13 +342,13 @@ func TestDocument(t *testing.T) {
 					openapi3.NewTag("orders").
 						SetDescription("Orders operations").
 						SetExternalDocs(
-							openapi3.NewExternalDocumentation("https://market.yandex.ru").
+							openapi3.NewExternalDocumentation("https://market.example.com").
 								SetDescription("E-commerce platform"),
 						),
 					openapi3.NewTag("payments").
 						SetDescription("Payments operations").
 						SetExternalDocs(
-							openapi3.NewExternalDocumentation("https://bank.yandex.ru").
+							openapi3.NewExternalDocumentation("https://bank.example.com").
 								SetDescription("New fancy digital bank"),
 						),
 				},
@@ -368,7 +368,7 @@ func TestDocument(t *testing.T) {
 						"name":        "orders",
 						"description": "Orders operations",
 						"externalDocs": map[string]any{
-							"url":         "https://market.yandex.ru",
+							"url":         "https://market.example.com",
 							"description": "E-commerce platform",
 						},
 					},
@@ -376,7 +376,7 @@ func TestDocument(t *testing.T) {
 						"name":        "payments",
 						"description": "Payments operations",
 						"externalDocs": map[string]any{
-							"url":         "https://bank.yandex.ru",
+							"url":         "https://bank.example.com",
 							"description": "New fancy digital bank",
 						},
 					},

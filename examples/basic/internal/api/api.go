@@ -22,8 +22,8 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 			SetTermsOfService(apiTermsOfServiceURL).
 			SetContact(
 				openapi3.NewContact("API Support").
-					SetURL("https://yandex.com/support").
-					SetEmail("greeting-api@support.yandex.com"),
+					SetURL("https://example.com/support").
+					SetEmail("greeting-api@support.example.com"),
 			).
 			SetExternalDocs(
 				openapi3.NewExternalDocumentation(apiDocsURL).

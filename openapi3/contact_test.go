@@ -33,18 +33,18 @@ func TestContact(t *testing.T) {
 
 	t.Run("WithURL", func(t *testing.T) {
 		contact := openapi3.NewContact("API Support").
-			SetURL("https://yandex.com/support")
+			SetURL("https://example.com/support")
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "API Support", contact.Name)
-			assert.Equal(t, "https://yandex.com/support", contact.URL)
+			assert.Equal(t, "https://example.com/support", contact.URL)
 			assert.Equal(t, "", contact.Email)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
 				"name": "API Support",
-				"url":  "https://yandex.com/support",
+				"url":  "https://example.com/support",
 			})
 			gotBytes, gotErr := json.Marshal(contact)
 
@@ -56,18 +56,18 @@ func TestContact(t *testing.T) {
 
 	t.Run("WithEmail", func(t *testing.T) {
 		contact := openapi3.NewContact("API Support").
-			SetEmail("greeting-api@support.yandex.com")
+			SetEmail("greeting-api@support.example.com")
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "API Support", contact.Name)
 			assert.Equal(t, "", contact.URL)
-			assert.Equal(t, "greeting-api@support.yandex.com", contact.Email)
+			assert.Equal(t, "greeting-api@support.example.com", contact.Email)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
 				"name":  "API Support",
-				"email": "greeting-api@support.yandex.com",
+				"email": "greeting-api@support.example.com",
 			})
 			gotBytes, gotErr := json.Marshal(contact)
 
