@@ -21,6 +21,9 @@ type Document struct {
 	//
 	// Default: []
 	Tags []*Tag `json:"tags"`
+
+	// Additional external documentation for the OpenAPI document.
+	ExternalDocs *ExternalDocumentation `json:"externalDocs,omitempty"`
 }
 
 // DocumentInfo provides metadata about the API.
@@ -46,7 +49,8 @@ func NewDocument() *Document {
 			Title:   "API",
 			Version: "0.0.1",
 		},
-		Tags: make([]*Tag, 0),
+		Tags:         make([]*Tag, 0),
+		ExternalDocs: nil,
 	}
 }
 
@@ -67,6 +71,13 @@ func (c *Document) SetVersion(version string) *Document {
 // SetTags method sets additional meta information to OpenAPI document.
 func (c *Document) SetTags(tags ...*Tag) *Document {
 	c.Tags = append(c.Tags, tags...)
+
+	return c
+}
+
+// SetExternalDocs sets external documentation link to OpenAPI document.
+func (c *Document) SetExternalDocs(externalDocs *ExternalDocumentation) *Document {
+	c.ExternalDocs = externalDocs
 
 	return c
 }

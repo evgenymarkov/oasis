@@ -23,6 +23,7 @@ issues:
         - gochecknoglobals
     - path: _test\.go
       linters:
+        - dupl
         - funlen
         - errcheck
         - paralleltest
