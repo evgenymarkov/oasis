@@ -39,6 +39,11 @@ type DocumentInfo struct {
 	//
 	// Default: "0.0.1"
 	Version string `json:"version"`
+
+	// A short summary of the API.
+	//
+	// Default: ""
+	Summary string `json:"summary,omitempty"`
 }
 
 // NewDocument creates new OpenAPI document with default values.
@@ -48,6 +53,7 @@ func NewDocument() *Document {
 		Info: &DocumentInfo{
 			Title:   "API",
 			Version: "0.0.1",
+			Summary: "",
 		},
 		Tags:         make([]*Tag, 0),
 		ExternalDocs: nil,
@@ -57,6 +63,13 @@ func NewDocument() *Document {
 // SetTitle method sets OpenAPI document title.
 func (c *Document) SetTitle(title string) *Document {
 	c.Info.Title = title
+
+	return c
+}
+
+// SetSummary method sets OpenAPI document summary.
+func (c *Document) SetSummary(summary string) *Document {
+	c.Info.Summary = summary
 
 	return c
 }

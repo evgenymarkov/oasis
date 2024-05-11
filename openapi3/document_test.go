@@ -16,6 +16,7 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Empty(t, document.Tags)
 			assert.Nil(t, document.ExternalDocs)
@@ -45,6 +46,7 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "Greeting API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Empty(t, document.Tags)
 			assert.Nil(t, document.ExternalDocs)
@@ -67,6 +69,37 @@ func TestDocument(t *testing.T) {
 		})
 	})
 
+	t.Run("WithSummary", func(t *testing.T) {
+		document := openapi3.NewDocument().
+			SetSummary("API for greetings")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "API for greetings", document.Info.Summary)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Empty(t, document.Tags)
+			assert.Nil(t, document.ExternalDocs)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":   "API",
+					"summary": "API for greetings",
+					"version": "0.0.1",
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
 	t.Run("WithCustomVersion", func(t *testing.T) {
 		document := openapi3.NewDocument().
 			SetVersion("1.0.0")
@@ -74,6 +107,7 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "1.0.0", document.Info.Version)
 			assert.Empty(t, document.Tags)
 			assert.Nil(t, document.ExternalDocs)
@@ -116,6 +150,7 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(
 				t,
@@ -184,6 +219,7 @@ func TestDocument(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
 			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Empty(t, document.Tags)
 			assert.Equal(
