@@ -20,6 +20,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -52,6 +53,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -84,6 +86,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -116,6 +119,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "API for greetings", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -149,6 +153,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -182,6 +187,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "https://yandex.com/legal/rules/", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -193,6 +199,56 @@ func TestDocument(t *testing.T) {
 					"title":          "API",
 					"termsOfService": "https://yandex.com/legal/rules/",
 					"version":        "0.0.1",
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
+	t.Run("WithContact", func(t *testing.T) {
+		document := openapi3.NewDocument().
+			SetContact(
+				openapi3.NewContact("API Support").
+					SetURL("https://yandex.com/support").
+					SetEmail("greeting-api@support.yandex.com"),
+			)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Equal(
+				t,
+				&openapi3.Contact{
+					Name:  "API Support",
+					URL:   "https://yandex.com/support",
+					Email: "greeting-api@support.yandex.com",
+				},
+				document.Info.Contact,
+			)
+			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":   "API",
+					"version": "0.0.1",
+					"contact": map[string]any{
+						"name":  "API Support",
+						"url":   "https://yandex.com/support",
+						"email": "greeting-api@support.yandex.com",
+					},
 				},
 				"tags": []any{},
 			})
@@ -221,6 +277,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Equal(
 				t,
 				&openapi3.ExternalDocumentation{
@@ -277,6 +334,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Equal(
 				t,

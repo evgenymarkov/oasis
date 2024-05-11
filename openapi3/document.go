@@ -58,6 +58,11 @@ type DocumentInfo struct {
 	//
 	// Default: ""
 	TermsOfService string `json:"termsOfService,omitempty"`
+
+	// The contact information for the exposed API.
+	//
+	// Default: ""
+	Contact *Contact `json:"contact,omitempty"`
 }
 
 // NewDocument creates new OpenAPI document with default values.
@@ -70,6 +75,7 @@ func NewDocument() *Document {
 			Summary:        "",
 			Description:    "",
 			TermsOfService: "",
+			Contact:        nil,
 		},
 		ExternalDocs: nil,
 		Tags:         make([]*Tag, 0),
@@ -107,6 +113,13 @@ func (c *Document) SetDescription(description string) *Document {
 // SetTermsOfService method sets Terms of Service for the API.
 func (c *Document) SetTermsOfService(termsURL string) *Document {
 	c.Info.TermsOfService = termsURL
+
+	return c
+}
+
+// SetContact method sets contact information for the exposed API.
+func (c *Document) SetContact(contact *Contact) *Document {
+	c.Info.Contact = contact
 
 	return c
 }
