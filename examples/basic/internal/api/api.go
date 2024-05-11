@@ -16,9 +16,9 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 			SetSwaggerUITitle("API Docs"),
 		openapi3.NewDocument().
 			SetTitle("Greeting API").
+			SetVersion("1.0.0").
 			SetSummary("API for greetings").
 			SetDescription("_Oasis_ is a library for Go web apps").
-			SetVersion("1.0.0").
 			SetTags(
 				openapi3.NewTag("greetings").
 					SetDescription("Greetings operations").

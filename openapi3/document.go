@@ -74,6 +74,13 @@ func (c *Document) SetTitle(title string) *Document {
 	return c
 }
 
+// SetVersion method sets OpenAPI document version.
+func (c *Document) SetVersion(version string) *Document {
+	c.Info.Version = version
+
+	return c
+}
+
 // SetSummary method sets OpenAPI document summary.
 func (c *Document) SetSummary(summary string) *Document {
 	c.Info.Summary = summary
@@ -84,13 +91,6 @@ func (c *Document) SetSummary(summary string) *Document {
 // SetDescription method sets OpenAPI document description.
 func (c *Document) SetDescription(description string) *Document {
 	c.Info.Description = description
-
-	return c
-}
-
-// SetVersion method sets OpenAPI document version.
-func (c *Document) SetVersion(version string) *Document {
-	c.Info.Version = version
 
 	return c
 }
