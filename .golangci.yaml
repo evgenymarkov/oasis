@@ -25,6 +25,7 @@ issues:
       linters:
         - dupl
         - funlen
+        - maintidx
         - errcheck
         - paralleltest
         - gochecknoglobals

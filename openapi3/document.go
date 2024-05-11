@@ -44,6 +44,12 @@ type DocumentInfo struct {
 	//
 	// Default: ""
 	Summary string `json:"summary,omitempty"`
+
+	// A description of the API.
+	// CommonMark syntax MAY be used for rich text representation.
+	//
+	// Default: ""
+	Description string `json:"description,omitempty"`
 }
 
 // NewDocument creates new OpenAPI document with default values.
@@ -51,9 +57,10 @@ func NewDocument() *Document {
 	return &Document{
 		OpenAPI: "3.1.0",
 		Info: &DocumentInfo{
-			Title:   "API",
-			Version: "0.0.1",
-			Summary: "",
+			Title:       "API",
+			Version:     "0.0.1",
+			Summary:     "",
+			Description: "",
 		},
 		Tags:         make([]*Tag, 0),
 		ExternalDocs: nil,
@@ -70,6 +77,13 @@ func (c *Document) SetTitle(title string) *Document {
 // SetSummary method sets OpenAPI document summary.
 func (c *Document) SetSummary(summary string) *Document {
 	c.Info.Summary = summary
+
+	return c
+}
+
+// SetDescription method sets OpenAPI document description.
+func (c *Document) SetDescription(description string) *Document {
+	c.Info.Description = description
 
 	return c
 }

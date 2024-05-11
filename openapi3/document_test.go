@@ -100,6 +100,38 @@ func TestDocument(t *testing.T) {
 		})
 	})
 
+	t.Run("WithDescription", func(t *testing.T) {
+		document := openapi3.NewDocument().
+			SetDescription("_Oasis_ is a library for Go web apps")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Empty(t, document.Tags)
+			assert.Nil(t, document.ExternalDocs)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":       "API",
+					"description": "_Oasis_ is a library for Go web apps",
+					"version":     "0.0.1",
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
 	t.Run("WithCustomVersion", func(t *testing.T) {
 		document := openapi3.NewDocument().
 			SetVersion("1.0.0")
