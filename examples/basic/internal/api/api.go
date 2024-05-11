@@ -24,6 +24,10 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 						openapi3.NewExternalDocumentation(wikiHelloURL).
 							SetDescription(wikiHelloDescription),
 					),
+			).
+			SetExternalDocs(
+				openapi3.NewExternalDocumentation(apiDocsURL).
+					SetDescription(apiDocsDescription),
 			),
 	)
 
