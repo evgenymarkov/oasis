@@ -21,6 +21,8 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -54,6 +56,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -87,6 +90,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -120,6 +124,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -154,6 +159,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -188,6 +194,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "https://example.com/legal/rules/", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -234,6 +241,7 @@ func TestDocument(t *testing.T) {
 				},
 				document.Info.Contact,
 			)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Empty(t, document.Tags)
 		})
@@ -248,6 +256,55 @@ func TestDocument(t *testing.T) {
 						"name":  "API Support",
 						"url":   "https://example.com/support",
 						"email": "greeting-api@support.example.com",
+					},
+				},
+				"tags": []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
+	t.Run("WithLicense", func(t *testing.T) {
+		document := openapi3.NewDocument().
+			SetLicense(
+				openapi3.NewLicense("MIT").
+					SetIdentifier("MIT"),
+			)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
+			assert.Equal(
+				t,
+				&openapi3.License{
+					Name:       "MIT",
+					Identifier: "MIT",
+					URL:        "",
+				},
+				document.Info.License,
+			)
+			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":   "API",
+					"version": "0.0.1",
+					"license": map[string]any{
+						"name":       "MIT",
+						"identifier": "MIT",
 					},
 				},
 				"tags": []any{},
@@ -278,6 +335,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Equal(
 				t,
 				&openapi3.ExternalDocumentation{
@@ -335,6 +393,7 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
 			assert.Equal(
 				t,

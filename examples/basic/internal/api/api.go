@@ -25,6 +25,10 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 					SetURL("https://example.com/support").
 					SetEmail("greeting-api@support.example.com"),
 			).
+			SetLicense(
+				openapi3.NewLicense("MIT").
+					SetIdentifier("MIT"),
+			).
 			SetExternalDocs(
 				openapi3.NewExternalDocumentation(apiDocsURL).
 					SetDescription(apiDocsDescription),
