@@ -57,12 +57,12 @@ func TestTag(t *testing.T) {
 	t.Run("WithExternalDocs", func(t *testing.T) {
 		tag := openapi3.NewTag("payments").
 			SetExternalDocs(
-				openapi3.NewExternalDocumentation("https://yandex.com").
+				openapi3.NewExternalDocumentation("https://example.com").
 					SetDescription("Popular search engine"),
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			docs := openapi3.NewExternalDocumentation("https://yandex.com").
+			docs := openapi3.NewExternalDocumentation("https://example.com").
 				SetDescription("Popular search engine")
 
 			assert.Equal(t, "payments", tag.Name)
@@ -74,7 +74,7 @@ func TestTag(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
 				"name": "payments",
 				"externalDocs": map[string]any{
-					"url":         "https://yandex.com",
+					"url":         "https://example.com",
 					"description": "Popular search engine",
 				},
 			})

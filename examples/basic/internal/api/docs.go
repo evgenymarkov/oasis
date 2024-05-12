@@ -2,8 +2,11 @@ package api
 
 const (
 	apiDocsURL         = "https://spec.openapis.org/oas/latest.html"
-	apiDocsDescription = "Specification that defines the structure of a API and describes its features"
+	apiDocsDescription = "External API documentation"
 
-	wikiHelloURL         = "https://wikipedia.org/wiki/Hello,_world!"
-	wikiHelloDescription = "Free online encyclopedia, created and edited by volunteers"
+	apiDescription       = "_Oasis_ is a library for Go web apps"
+	apiTermsOfServiceURL = "https://example.com/legal/rules"
+
+	wikiHelloURL         = "https://en.wikipedia.org/wiki/Greeting"
+	wikiHelloDescription = "Wiki article about greetings"
 )

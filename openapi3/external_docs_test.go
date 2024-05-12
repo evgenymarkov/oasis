@@ -11,16 +11,16 @@ import (
 
 func TestExternalDocumentation(t *testing.T) {
 	t.Run("Basic", func(t *testing.T) {
-		externalDocs := openapi3.NewExternalDocumentation("https://yandex.com")
+		externalDocs := openapi3.NewExternalDocumentation("https://example.com")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "https://yandex.com", externalDocs.URL)
+			assert.Equal(t, "https://example.com", externalDocs.URL)
 			assert.Equal(t, "", externalDocs.Description)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"url": "https://yandex.com",
+				"url": "https://example.com",
 			})
 			gotBytes, gotErr := json.Marshal(externalDocs)
 
@@ -31,17 +31,17 @@ func TestExternalDocumentation(t *testing.T) {
 	})
 
 	t.Run("WithDescription", func(t *testing.T) {
-		externalDocs := openapi3.NewExternalDocumentation("https://yandex.com").
+		externalDocs := openapi3.NewExternalDocumentation("https://example.com").
 			SetDescription("Popular search engine")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "https://yandex.com", externalDocs.URL)
+			assert.Equal(t, "https://example.com", externalDocs.URL)
 			assert.Equal(t, "Popular search engine", externalDocs.Description)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"url":         "https://yandex.com",
+				"url":         "https://example.com",
 				"description": "Popular search engine",
 			})
 			gotBytes, gotErr := json.Marshal(externalDocs)
