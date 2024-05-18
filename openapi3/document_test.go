@@ -22,8 +22,8 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -34,7 +34,8 @@ func TestDocument(t *testing.T) {
 					"title":   "API",
 					"version": "0.0.1",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -58,6 +59,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -68,7 +70,8 @@ func TestDocument(t *testing.T) {
 					"title":   "Greeting API",
 					"version": "0.0.1",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -92,6 +95,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -102,7 +106,8 @@ func TestDocument(t *testing.T) {
 					"title":   "API",
 					"version": "1.0.0",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -126,6 +131,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -137,7 +143,8 @@ func TestDocument(t *testing.T) {
 					"summary": "API for greetings",
 					"version": "0.0.1",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -161,6 +168,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -172,7 +180,8 @@ func TestDocument(t *testing.T) {
 					"description": "_Oasis_ is a library for Go web apps",
 					"version":     "0.0.1",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -196,6 +205,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -207,7 +217,8 @@ func TestDocument(t *testing.T) {
 					"termsOfService": "https://example.com/legal/rules/",
 					"version":        "0.0.1",
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -243,6 +254,7 @@ func TestDocument(t *testing.T) {
 			)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -258,7 +270,8 @@ func TestDocument(t *testing.T) {
 						"email": "greeting-api@support.example.com",
 					},
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -293,6 +306,7 @@ func TestDocument(t *testing.T) {
 				document.Info.License,
 			)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -307,7 +321,8 @@ func TestDocument(t *testing.T) {
 						"identifier": "MIT",
 					},
 				},
-				"tags": []any{},
+				"servers": []any{},
+				"tags":    []any{},
 			})
 			gotBytes, gotErr := json.Marshal(document)
 
@@ -344,6 +359,7 @@ func TestDocument(t *testing.T) {
 				},
 				document.ExternalDocs,
 			)
+			assert.Empty(t, document.Servers)
 			assert.Empty(t, document.Tags)
 		})
 
@@ -357,6 +373,56 @@ func TestDocument(t *testing.T) {
 				"externalDocs": map[string]any{
 					"url":         wikiHelloURL,
 					"description": wikiHelloDescription,
+				},
+				"servers": []any{},
+				"tags":    []any{},
+			})
+			gotBytes, gotErr := json.Marshal(document)
+
+			require.NoError(t, wantErr)
+			require.NoError(t, gotErr)
+			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+		})
+	})
+
+	t.Run("WithServers", func(t *testing.T) {
+		server1 := openapi3.NewServer("https://example.com").
+			SetDescription("Production")
+		server2 := openapi3.NewServer("https://test.example.com").
+			SetDescription("Testing")
+		document := openapi3.NewDocument().
+			SetServers(server1, server2)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, "API", document.Info.Title)
+			assert.Equal(t, "0.0.1", document.Info.Version)
+			assert.Equal(t, "", document.Info.Summary)
+			assert.Equal(t, "", document.Info.Description)
+			assert.Equal(t, "", document.Info.TermsOfService)
+			assert.Nil(t, document.Info.Contact)
+			assert.Nil(t, document.Info.License)
+			assert.Nil(t, document.ExternalDocs)
+			assert.Equal(t, []*openapi3.Server{server1, server2}, document.Servers)
+			assert.Empty(t, document.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			wantBytes, wantErr := json.Marshal(map[string]any{
+				"openapi": "3.1.0",
+				"info": map[string]any{
+					"title":   "API",
+					"version": "0.0.1",
+				},
+				"servers": []any{
+					map[string]any{
+						"url":         "https://example.com",
+						"description": "Production",
+					},
+					map[string]any{
+						"url":         "https://test.example.com",
+						"description": "Testing",
+					},
 				},
 				"tags": []any{},
 			})
@@ -395,6 +461,7 @@ func TestDocument(t *testing.T) {
 			assert.Nil(t, document.Info.Contact)
 			assert.Nil(t, document.Info.License)
 			assert.Nil(t, document.ExternalDocs)
+			assert.Empty(t, document.Servers)
 			assert.Equal(
 				t,
 				[]*openapi3.Tag{
@@ -422,6 +489,7 @@ func TestDocument(t *testing.T) {
 					"title":   "API",
 					"version": "0.0.1",
 				},
+				"servers": []any{},
 				"tags": []any{
 					map[string]any{
 						"name":        "orders",

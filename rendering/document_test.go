@@ -62,6 +62,7 @@ func TestDocumentHandler(t *testing.T) {
 			"title":   "Greeting API",
 			"version": "1.0.0",
 		},
+		"servers": []any{},
 		"tags": []any{
 			map[string]any{
 				"name":        "orders",
