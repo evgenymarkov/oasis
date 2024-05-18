@@ -22,6 +22,11 @@ type Document struct {
 	// Default: nil
 	ExternalDocs *ExternalDocumentation `json:"externalDocs,omitempty"`
 
+	// Servers array to provide connectivity information to a target server.
+	//
+	// Default: []
+	Servers []*Server `json:"servers"`
+
 	// Additional meta information of the OpenAPI document.
 	//
 	// Default: []
@@ -84,6 +89,7 @@ func NewDocument() *Document {
 			License:        nil,
 		},
 		ExternalDocs: nil,
+		Servers:      make([]*Server, 0),
 		Tags:         make([]*Tag, 0),
 	}
 }
@@ -140,6 +146,13 @@ func (c *Document) SetLicense(license *License) *Document {
 // SetExternalDocs sets external documentation link to OpenAPI document.
 func (c *Document) SetExternalDocs(externalDocs *ExternalDocumentation) *Document {
 	c.ExternalDocs = externalDocs
+
+	return c
+}
+
+// SetServers method sets connectivity information to a target servers.
+func (c *Document) SetServers(servers ...*Server) *Document {
+	c.Servers = servers
 
 	return c
 }
