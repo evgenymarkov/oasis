@@ -33,6 +33,12 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 				openapi3.NewExternalDocumentation(apiDocsURL).
 					SetDescription(apiDocsDescription),
 			).
+			SetServers(
+				openapi3.NewServer("https://example.com").
+					SetDescription("Production"),
+				openapi3.NewServer("https://test.example.com").
+					SetDescription("Testing"),
+			).
 			SetTags(
 				openapi3.NewTag("greetings").
 					SetDescription("Greetings operations").
