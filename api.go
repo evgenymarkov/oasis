@@ -62,6 +62,7 @@ func (a *API) Get(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodGet+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodGet, operation)
 }
 
 // Head method registers an handler for HTTP HEAD requests matching the pattern
@@ -72,6 +73,7 @@ func (a *API) Head(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodHead+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodHead, operation)
 }
 
 // Post method registers an handler for HTTP POST requests matching the pattern
@@ -82,6 +84,7 @@ func (a *API) Post(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodPost+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodPost, operation)
 }
 
 // Put method registers an handler for HTTP PUT requests matching the pattern
@@ -92,6 +95,7 @@ func (a *API) Put(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodPut+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodPut, operation)
 }
 
 // Patch method registers an handler for HTTP PATCH requests matching the pattern
@@ -102,6 +106,7 @@ func (a *API) Patch(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodPatch+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodPatch, operation)
 }
 
 // Delete method registers an handler for HTTP DELETE requests matching the pattern
@@ -112,6 +117,7 @@ func (a *API) Delete(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodDelete+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodDelete, operation)
 }
 
 // Options method registers an handler for HTTP OPTIONS requests matching the pattern
@@ -122,6 +128,7 @@ func (a *API) Options(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodOptions+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodOptions, operation)
 }
 
 // Trace method registers an handler for HTTP TRACE requests matching the pattern
@@ -132,4 +139,5 @@ func (a *API) Trace(
 	operation *openapi3.Operation,
 ) {
 	a.mux.HandleFunc(http.MethodTrace+" "+pattern, handler)
+	a.document.AddOperation(pattern, http.MethodTrace, operation)
 }
