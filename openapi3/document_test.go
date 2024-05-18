@@ -33,6 +33,7 @@ func TestDocument(t *testing.T) {
 						"version": "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -59,6 +60,7 @@ func TestDocument(t *testing.T) {
 						"version": "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -85,6 +87,7 @@ func TestDocument(t *testing.T) {
 						"version": "1.0.0",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -112,6 +115,7 @@ func TestDocument(t *testing.T) {
 						"version": "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -139,6 +143,7 @@ func TestDocument(t *testing.T) {
 						"version":     "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -166,6 +171,7 @@ func TestDocument(t *testing.T) {
 						"version":        "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -209,6 +215,7 @@ func TestDocument(t *testing.T) {
 						},
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -250,6 +257,7 @@ func TestDocument(t *testing.T) {
 						},
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -293,6 +301,7 @@ func TestDocument(t *testing.T) {
 						"description": wikiHelloDescription,
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags":    []any{},
 				},
 				document,
@@ -330,6 +339,55 @@ func TestDocument(t *testing.T) {
 						map[string]any{
 							"url":         "https://test.example.com",
 							"description": "Testing",
+						},
+					},
+					"paths": map[string]any{},
+					"tags":  []any{},
+				},
+				document,
+			)
+		})
+	})
+
+	t.Run("WithPaths", func(t *testing.T) {
+		getOperation := &openapi3.Operation{
+			OperationID: "get-operation",
+			Summary:     "Get operation",
+		}
+		postOperation := &openapi3.Operation{
+			OperationID: "save-operation",
+			Summary:     "Post operation",
+		}
+		document := openapi3.NewDocument().
+			AddOperation("/example", "GET", getOperation).
+			AddOperation("/example", "POST", postOperation)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, getOperation, document.Paths["/example"].Get)
+			assert.Equal(t, postOperation, document.Paths["/example"].Post)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+					},
+					"servers": []any{},
+					"paths": map[string]any{
+						"/example": map[string]any{
+							"get": map[string]any{
+								"operationId": "get-operation",
+								"summary":     "Get operation",
+							},
+							"post": map[string]any{
+								"operationId": "save-operation",
+								"summary":     "Post operation",
+							},
 						},
 					},
 					"tags": []any{},
@@ -388,6 +446,7 @@ func TestDocument(t *testing.T) {
 						"version": "0.0.1",
 					},
 					"servers": []any{},
+					"paths":   map[string]any{},
 					"tags": []any{
 						map[string]any{
 							"name":        "orders",
