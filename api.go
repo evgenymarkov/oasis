@@ -114,16 +114,6 @@ func (a *API) Delete(
 	a.mux.HandleFunc(http.MethodDelete+" "+pattern, handler)
 }
 
-// Connect method registers an handler for HTTP CONNECT requests matching the pattern
-// and updates operations table in OpenAPI document.
-func (a *API) Connect(
-	pattern string,
-	handler http.HandlerFunc,
-	operation *openapi3.Operation,
-) {
-	a.mux.HandleFunc(http.MethodConnect+" "+pattern, handler)
-}
-
 // Options method registers an handler for HTTP OPTIONS requests matching the pattern
 // and updates operations table in OpenAPI document.
 func (a *API) Options(

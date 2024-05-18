@@ -71,7 +71,6 @@ func TestAPIWithOperationsHandlers(t *testing.T) {
 	api.Put("/ping-put", pingHandler, pingOperation)
 	api.Patch("/ping-patch", pingHandler, pingOperation)
 	api.Delete("/ping-delete", pingHandler, pingOperation)
-	api.Connect("/ping-connect", pingHandler, pingOperation)
 	api.Options("/ping-options", pingHandler, pingOperation)
 	api.Trace("/ping-trace", pingHandler, pingOperation)
 
@@ -91,7 +90,6 @@ func TestAPIWithOperationsHandlers(t *testing.T) {
 		{method: http.MethodPut, pattern: "/ping-put"},
 		{method: http.MethodPatch, pattern: "/ping-patch"},
 		{method: http.MethodDelete, pattern: "/ping-delete"},
-		{method: http.MethodConnect, pattern: "/ping-connect"},
 		{method: http.MethodOptions, pattern: "/ping-options"},
 		{method: http.MethodTrace, pattern: "/ping-trace"},
 	})
