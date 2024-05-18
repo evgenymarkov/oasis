@@ -57,7 +57,8 @@ func TestDocumentHandler(t *testing.T) {
 	require.NoError(t, readErr)
 
 	wantBytes, wantErr := json.Marshal(map[string]any{
-		"openapi": "3.1.0",
+		"openapi":           "3.1.0",
+		"jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base",
 		"info": map[string]any{
 			"title":   "Greeting API",
 			"version": "1.0.0",

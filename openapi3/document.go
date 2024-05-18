@@ -9,6 +9,12 @@ type Document struct {
 	// Default: "3.1.0"
 	OpenAPI string `json:"openapi"`
 
+	// The default value for the $schema within Schema Objects contained within OpenAPI document.
+	// This MUST be in the form of a URI.
+	//
+	// Default: "https://spec.openapis.org/oas/3.1/dialect/base"
+	JSONSchemaDialect string `json:"jsonSchemaDialect"`
+
 	// Info provides metadata about the API.
 	//
 	// Default: DocumentInfo{
@@ -78,7 +84,8 @@ type DocumentInfo struct {
 // NewDocument creates new OpenAPI document with default values.
 func NewDocument() *Document {
 	return &Document{
-		OpenAPI: "3.1.0",
+		OpenAPI:           "3.1.0",
+		JSONSchemaDialect: "https://spec.openapis.org/oas/3.1/dialect/base",
 		Info: &DocumentInfo{
 			Title:          "API",
 			Version:        "0.0.1",

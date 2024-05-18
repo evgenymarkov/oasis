@@ -9,12 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	jsonSchemaDialect = "https://spec.openapis.org/oas/3.1/dialect/base"
+)
+
 func TestDocument(t *testing.T) {
 	t.Run("Basic", func(t *testing.T) {
 		document := openapi3.NewDocument()
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -29,7 +34,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
@@ -51,6 +57,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "Greeting API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -65,7 +72,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "Greeting API",
 					"version": "0.0.1",
@@ -87,6 +95,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "1.0.0", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -101,7 +110,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "1.0.0",
@@ -123,6 +133,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "API for greetings", document.Info.Summary)
@@ -137,7 +148,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"summary": "API for greetings",
@@ -160,6 +172,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -174,7 +187,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":       "API",
 					"description": "_Oasis_ is a library for Go web apps",
@@ -197,6 +211,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -211,7 +226,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":          "API",
 					"termsOfService": "https://example.com/legal/rules/",
@@ -238,6 +254,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -260,7 +277,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
@@ -290,6 +308,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -312,7 +331,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
@@ -344,6 +364,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -365,7 +386,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
@@ -395,6 +417,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -409,7 +432,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
@@ -453,6 +477,7 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "3.1.0", document.OpenAPI)
+			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "", document.Info.Summary)
@@ -484,7 +509,8 @@ func TestDocument(t *testing.T) {
 
 		t.Run("Serialization", func(t *testing.T) {
 			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi": "3.1.0",
+				"openapi":           "3.1.0",
+				"jsonSchemaDialect": jsonSchemaDialect,
 				"info": map[string]any{
 					"title":   "API",
 					"version": "0.0.1",
