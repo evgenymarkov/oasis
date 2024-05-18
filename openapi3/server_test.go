@@ -1,12 +1,10 @@
 package openapi3_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestServer(t *testing.T) {
@@ -15,19 +13,14 @@ func TestServer(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "https://example.com", server.URL)
-			assert.Equal(t, "", server.Description)
-			assert.Empty(t, server.Variables)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"url": "https://example.com",
-			})
-			gotBytes, gotErr := json.Marshal(server)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{"url": "https://example.com"},
+				server,
+			)
 		})
 	})
 
@@ -41,15 +34,14 @@ func TestServer(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"url":         "https://example.com",
-				"description": "Server with description",
-			})
-			gotBytes, gotErr := json.Marshal(server)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"url":         "https://example.com",
+					"description": "Server with description",
+				},
+				server,
+			)
 		})
 	})
 
@@ -64,8 +56,6 @@ func TestServer(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "https://{username}.example.com", server.URL)
-			assert.Empty(t, server.Description)
-			assert.NotEmpty(t, server.Variables)
 			assert.Contains(t, server.Variables, "username")
 			assert.Contains(t, server.Variables, "port")
 			assert.Equal(t, "user1", server.Variables["username"].Default)
@@ -77,26 +67,25 @@ func TestServer(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"url": "https://{username}.example.com",
-				"variables": map[string]any{
-					"username": map[string]any{
-						"default":     "user1",
-						"description": "Username for the server",
-						"enum":        []string{"user1", "user2"},
-					},
-					"port": map[string]any{
-						"default":     "8080",
-						"description": "Port for the server",
-						"enum":        []string{"8080", "9090"},
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"url": "https://{username}.example.com",
+					"variables": map[string]any{
+						"username": map[string]any{
+							"default":     "user1",
+							"description": "Username for the server",
+							"enum":        []string{"user1", "user2"},
+						},
+						"port": map[string]any{
+							"default":     "8080",
+							"description": "Port for the server",
+							"enum":        []string{"8080", "9090"},
+						},
 					},
 				},
-			})
-			gotBytes, gotErr := json.Marshal(server)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				server,
+			)
 		})
 	})
 }

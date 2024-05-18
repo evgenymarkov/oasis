@@ -1,12 +1,10 @@
 package openapi3_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -22,32 +20,23 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -56,36 +45,24 @@ func TestDocument(t *testing.T) {
 			SetTitle("Greeting API")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "Greeting API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "Greeting API",
-					"version": "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "Greeting API",
+						"version": "0.0.1",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -94,36 +71,24 @@ func TestDocument(t *testing.T) {
 			SetVersion("1.0.0")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "1.0.0", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "1.0.0",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "1.0.0",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -132,37 +97,25 @@ func TestDocument(t *testing.T) {
 			SetSummary("API for greetings")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "API for greetings", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"summary": "API for greetings",
-					"version": "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"summary": "API for greetings",
+						"version": "0.0.1",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -171,37 +124,25 @@ func TestDocument(t *testing.T) {
 			SetDescription("_Oasis_ is a library for Go web apps")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":       "API",
-					"description": "_Oasis_ is a library for Go web apps",
-					"version":     "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":       "API",
+						"description": "_Oasis_ is a library for Go web apps",
+						"version":     "0.0.1",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -210,37 +151,25 @@ func TestDocument(t *testing.T) {
 			SetTermsOfService("https://example.com/legal/rules/")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "https://example.com/legal/rules/", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":          "API",
-					"termsOfService": "https://example.com/legal/rules/",
-					"version":        "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":          "API",
+						"termsOfService": "https://example.com/legal/rules/",
+						"version":        "0.0.1",
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -253,13 +182,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Equal(
 				t,
 				&openapi3.Contact{
@@ -269,33 +191,28 @@ func TestDocument(t *testing.T) {
 				},
 				document.Info.Contact,
 			)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
-					"contact": map[string]any{
-						"name":  "API Support",
-						"url":   "https://example.com/support",
-						"email": "greeting-api@support.example.com",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+						"contact": map[string]any{
+							"name":  "API Support",
+							"url":   "https://example.com/support",
+							"email": "greeting-api@support.example.com",
+						},
 					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -307,14 +224,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
 			assert.Equal(
 				t,
 				&openapi3.License{
@@ -324,31 +233,27 @@ func TestDocument(t *testing.T) {
 				},
 				document.Info.License,
 			)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
-					"license": map[string]any{
-						"name":       "MIT",
-						"identifier": "MIT",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+						"license": map[string]any{
+							"name":       "MIT",
+							"identifier": "MIT",
+						},
 					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -363,15 +268,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
 			assert.Equal(
 				t,
 				&openapi3.ExternalDocumentation{
@@ -380,30 +276,27 @@ func TestDocument(t *testing.T) {
 				},
 				document.ExternalDocs,
 			)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+					},
+					"externalDocs": map[string]any{
+						"url":         wikiHelloURL,
+						"description": wikiHelloDescription,
+					},
+					"servers": []any{},
+					"tags":    []any{},
 				},
-				"externalDocs": map[string]any{
-					"url":         wikiHelloURL,
-					"description": wikiHelloDescription,
-				},
-				"servers": []any{},
-				"tags":    []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -416,45 +309,33 @@ func TestDocument(t *testing.T) {
 			SetServers(server1, server2)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
 			assert.Equal(t, []*openapi3.Server{server1, server2}, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
-				},
-				"servers": []any{
-					map[string]any{
-						"url":         "https://example.com",
-						"description": "Production",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
 					},
-					map[string]any{
-						"url":         "https://test.example.com",
-						"description": "Testing",
+					"servers": []any{
+						map[string]any{
+							"url":         "https://example.com",
+							"description": "Production",
+						},
+						map[string]any{
+							"url":         "https://test.example.com",
+							"description": "Testing",
+						},
 					},
+					"tags": []any{},
 				},
-				"tags": []any{},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 
@@ -476,17 +357,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
 			assert.Equal(
 				t,
 				[]*openapi3.Tag{
@@ -508,38 +378,37 @@ func TestDocument(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"openapi":           "3.1.0",
-				"jsonSchemaDialect": jsonSchemaDialect,
-				"info": map[string]any{
-					"title":   "API",
-					"version": "0.0.1",
-				},
-				"servers": []any{},
-				"tags": []any{
-					map[string]any{
-						"name":        "orders",
-						"description": "Orders operations",
-						"externalDocs": map[string]any{
-							"url":         "https://market.example.com",
-							"description": "E-commerce platform",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"openapi":           "3.1.0",
+					"jsonSchemaDialect": jsonSchemaDialect,
+					"info": map[string]any{
+						"title":   "API",
+						"version": "0.0.1",
+					},
+					"servers": []any{},
+					"tags": []any{
+						map[string]any{
+							"name":        "orders",
+							"description": "Orders operations",
+							"externalDocs": map[string]any{
+								"url":         "https://market.example.com",
+								"description": "E-commerce platform",
+							},
+						},
+						map[string]any{
+							"name":        "payments",
+							"description": "Payments operations",
+							"externalDocs": map[string]any{
+								"url":         "https://bank.example.com",
+								"description": "New fancy digital bank",
+							},
 						},
 					},
-					map[string]any{
-						"name":        "payments",
-						"description": "Payments operations",
-						"externalDocs": map[string]any{
-							"url":         "https://bank.example.com",
-							"description": "New fancy digital bank",
-						},
-					},
 				},
-			})
-			gotBytes, gotErr := json.Marshal(document)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				document,
+			)
 		})
 	})
 }
