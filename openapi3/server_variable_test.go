@@ -12,9 +12,7 @@ func TestServerVariable(t *testing.T) {
 		serverVariable := openapi3.NewServerVariable("default-token")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Nil(t, serverVariable.Enum)
 			assert.Equal(t, "default-token", serverVariable.Default)
-			assert.Equal(t, "", serverVariable.Description)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -33,7 +31,6 @@ func TestServerVariable(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.ElementsMatch(t, []string{"default-token", "custom-token"}, serverVariable.Enum)
 			assert.Equal(t, "default-token", serverVariable.Default)
-			assert.Equal(t, "", serverVariable.Description)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -53,7 +50,6 @@ func TestServerVariable(t *testing.T) {
 			SetDescription("Authentication token")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Nil(t, serverVariable.Enum)
 			assert.Equal(t, "default-token", serverVariable.Default)
 			assert.Equal(t, "Authentication token", serverVariable.Description)
 		})

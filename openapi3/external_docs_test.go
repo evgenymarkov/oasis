@@ -13,7 +13,6 @@ func TestExternalDocumentation(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "https://example.com", externalDocs.URL)
-			assert.Equal(t, "", externalDocs.Description)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {

@@ -13,8 +13,6 @@ func TestServer(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "https://example.com", server.URL)
-			assert.Equal(t, "", server.Description)
-			assert.Empty(t, server.Variables)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -58,8 +56,6 @@ func TestServer(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "https://{username}.example.com", server.URL)
-			assert.Empty(t, server.Description)
-			assert.NotEmpty(t, server.Variables)
 			assert.Contains(t, server.Variables, "username")
 			assert.Contains(t, server.Variables, "port")
 			assert.Equal(t, "user1", server.Variables["username"].Default)

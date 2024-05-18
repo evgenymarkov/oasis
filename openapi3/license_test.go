@@ -13,8 +13,6 @@ func TestLicense(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "Apache 2.0", license.Name)
-			assert.Equal(t, "", license.Identifier)
-			assert.Equal(t, "", license.URL)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -33,7 +31,6 @@ func TestLicense(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "Apache 2.0", license.Name)
 			assert.Equal(t, "Apache-2.0", license.Identifier)
-			assert.Equal(t, "", license.URL)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -54,7 +51,6 @@ func TestLicense(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "Apache 2.0", license.Name)
-			assert.Equal(t, "", license.Identifier)
 			assert.Equal(t, "https://www.apache.org/licenses/LICENSE-2.0", license.URL)
 		})
 

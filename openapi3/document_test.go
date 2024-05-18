@@ -20,14 +20,6 @@ func TestDocument(t *testing.T) {
 			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -53,18 +45,7 @@ func TestDocument(t *testing.T) {
 			SetTitle("Greeting API")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
 			assert.Equal(t, "Greeting API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -90,18 +71,7 @@ func TestDocument(t *testing.T) {
 			SetVersion("1.0.0")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
 			assert.Equal(t, "1.0.0", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -127,18 +97,7 @@ func TestDocument(t *testing.T) {
 			SetSummary("API for greetings")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
 			assert.Equal(t, "API for greetings", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -165,18 +124,7 @@ func TestDocument(t *testing.T) {
 			SetDescription("_Oasis_ is a library for Go web apps")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
 			assert.Equal(t, "_Oasis_ is a library for Go web apps", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -203,18 +151,7 @@ func TestDocument(t *testing.T) {
 			SetTermsOfService("https://example.com/legal/rules/")
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
 			assert.Equal(t, "https://example.com/legal/rules/", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -245,13 +182,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
 			assert.Equal(
 				t,
 				&openapi3.Contact{
@@ -261,10 +191,6 @@ func TestDocument(t *testing.T) {
 				},
 				document.Info.Contact,
 			)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -298,14 +224,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
 			assert.Equal(
 				t,
 				&openapi3.License{
@@ -315,9 +233,6 @@ func TestDocument(t *testing.T) {
 				},
 				document.Info.License,
 			)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -353,15 +268,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
 			assert.Equal(
 				t,
 				&openapi3.ExternalDocumentation{
@@ -370,8 +276,6 @@ func TestDocument(t *testing.T) {
 				},
 				document.ExternalDocs,
 			)
-			assert.Empty(t, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -405,18 +309,7 @@ func TestDocument(t *testing.T) {
 			SetServers(server1, server2)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
 			assert.Equal(t, []*openapi3.Server{server1, server2}, document.Servers)
-			assert.Empty(t, document.Tags)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -464,17 +357,6 @@ func TestDocument(t *testing.T) {
 			)
 
 		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "3.1.0", document.OpenAPI)
-			assert.Equal(t, jsonSchemaDialect, document.JSONSchemaDialect)
-			assert.Equal(t, "API", document.Info.Title)
-			assert.Equal(t, "0.0.1", document.Info.Version)
-			assert.Equal(t, "", document.Info.Summary)
-			assert.Equal(t, "", document.Info.Description)
-			assert.Equal(t, "", document.Info.TermsOfService)
-			assert.Nil(t, document.Info.Contact)
-			assert.Nil(t, document.Info.License)
-			assert.Nil(t, document.ExternalDocs)
-			assert.Empty(t, document.Servers)
 			assert.Equal(
 				t,
 				[]*openapi3.Tag{

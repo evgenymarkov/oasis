@@ -13,8 +13,6 @@ func TestContact(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "API Support", contact.Name)
-			assert.Equal(t, "", contact.URL)
-			assert.Equal(t, "", contact.Email)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -33,7 +31,6 @@ func TestContact(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "API Support", contact.Name)
 			assert.Equal(t, "https://example.com/support", contact.URL)
-			assert.Equal(t, "", contact.Email)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -54,7 +51,6 @@ func TestContact(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "API Support", contact.Name)
-			assert.Equal(t, "", contact.URL)
 			assert.Equal(t, "greeting-api@support.example.com", contact.Email)
 		})
 

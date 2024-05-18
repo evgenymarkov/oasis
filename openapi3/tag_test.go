@@ -13,8 +13,6 @@ func TestTag(t *testing.T) {
 
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "payments", tag.Name)
-			assert.Equal(t, "", tag.Description)
-			assert.Nil(t, tag.ExternalDocs)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -33,7 +31,6 @@ func TestTag(t *testing.T) {
 		t.Run("Values", func(t *testing.T) {
 			assert.Equal(t, "payments", tag.Name)
 			assert.Equal(t, "Payments operations", tag.Description)
-			assert.Nil(t, tag.ExternalDocs)
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
@@ -60,7 +57,6 @@ func TestTag(t *testing.T) {
 				SetDescription("Popular search engine")
 
 			assert.Equal(t, "payments", tag.Name)
-			assert.Equal(t, "", tag.Description)
 			assert.Equal(t, docs, tag.ExternalDocs)
 		})
 
