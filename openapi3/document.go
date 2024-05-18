@@ -33,6 +33,11 @@ type Document struct {
 	// Default: []
 	Servers []*Server `json:"servers"`
 
+	// Paths holds the relative paths to the individual endpoints and their operations.
+	//
+	// Default: map[string]*PathItem{}
+	Paths map[string]*PathItem `json:"paths"`
+
 	// Additional meta information of the OpenAPI document.
 	//
 	// Default: []
@@ -97,6 +102,7 @@ func NewDocument() *Document {
 		},
 		ExternalDocs: nil,
 		Servers:      make([]*Server, 0),
+		Paths:        make(map[string]*PathItem),
 		Tags:         make([]*Tag, 0),
 	}
 }
@@ -157,9 +163,20 @@ func (c *Document) SetExternalDocs(externalDocs *ExternalDocumentation) *Documen
 	return c
 }
 
-// SetServers method sets connectivity information to a target servers.
+// SetServers method sets connectivity information to target servers.
 func (c *Document) SetServers(servers ...*Server) *Document {
 	c.Servers = servers
+
+	return c
+}
+
+// AddOperation registers an operation to the specified path in the OpenAPI document.
+func (c *Document) AddOperation(path, method string, operation *Operation) *Document {
+	if c.Paths[path] == nil {
+		c.Paths[path] = NewPathItem()
+	}
+
+	c.Paths[path].SetOperation(method, operation)
 
 	return c
 }

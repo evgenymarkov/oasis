@@ -21,7 +21,7 @@ tasks:
 
   update-swagger-ui:
     vars:
-      VERSION: "5.13.0" # https://github.com/swagger-api/swagger-ui/releases
+      VERSION: "5.17.10" # https://github.com/swagger-api/swagger-ui/releases
       BASE_URL: "https://github.com/swagger-api/swagger-ui/archive/refs/tags"
     cmds:
       # Create temporary directory for artifacts
@@ -35,7 +35,7 @@ tasks:
       # Unpack Swagger UI bundle to temporary directory
       - unzip .tmp/swagger-ui.zip -d .tmp/
       # Copy content of Swagger UI bundle files to static directory
-      - cp -r .tmp/swagger-ui-{{.VERSION}}/dist/ ./rendering/static/
+      - cp .tmp/swagger-ui-{{.VERSION}}/dist/* ./rendering/static/
       # Remove files that are not needed for the Swagger UI to work
       - rm ./rendering/static/index.html
       - rm ./rendering/static/swagger-ui.js*
