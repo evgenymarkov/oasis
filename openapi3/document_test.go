@@ -386,10 +386,10 @@ func TestDocument(t *testing.T) {
 	})
 
 	t.Run("WithServers", func(t *testing.T) {
-		server1 := openapi3.NewServer("https://api.example.com/v1").
-			SetDescription("Production server")
-		server2 := openapi3.NewServer("https://staging-api.example.com").
-			SetDescription("Staging server")
+		server1 := openapi3.NewServer("https://example.com").
+			SetDescription("Production")
+		server2 := openapi3.NewServer("https://test.example.com").
+			SetDescription("Testing")
 		document := openapi3.NewDocument().
 			SetServers(server1, server2)
 
@@ -416,12 +416,12 @@ func TestDocument(t *testing.T) {
 				},
 				"servers": []any{
 					map[string]any{
-						"url":         "https://api.example.com/v1",
-						"description": "Production server",
+						"url":         "https://example.com",
+						"description": "Production",
 					},
 					map[string]any{
-						"url":         "https://staging-api.example.com",
-						"description": "Staging server",
+						"url":         "https://test.example.com",
+						"description": "Testing",
 					},
 				},
 				"tags": []any{},
