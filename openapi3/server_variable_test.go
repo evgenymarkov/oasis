@@ -1,12 +1,10 @@
 package openapi3_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestServerVariable(t *testing.T) {
@@ -20,14 +18,11 @@ func TestServerVariable(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"default": "default-token",
-			})
-			gotBytes, gotErr := json.Marshal(serverVariable)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{"default": "default-token"},
+				serverVariable,
+			)
 		})
 	})
 
@@ -42,15 +37,14 @@ func TestServerVariable(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"enum":    []string{"default-token", "custom-token"},
-				"default": "default-token",
-			})
-			gotBytes, gotErr := json.Marshal(serverVariable)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"enum":    []string{"default-token", "custom-token"},
+					"default": "default-token",
+				},
+				serverVariable,
+			)
 		})
 	})
 
@@ -65,15 +59,14 @@ func TestServerVariable(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"default":     "default-token",
-				"description": "Authentication token",
-			})
-			gotBytes, gotErr := json.Marshal(serverVariable)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"default":     "default-token",
+					"description": "Authentication token",
+				},
+				serverVariable,
+			)
 		})
 	})
 }

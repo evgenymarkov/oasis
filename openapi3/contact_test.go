@@ -1,12 +1,10 @@
 package openapi3_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestContact(t *testing.T) {
@@ -20,14 +18,11 @@ func TestContact(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name": "API Support",
-			})
-			gotBytes, gotErr := json.Marshal(contact)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{"name": "API Support"},
+				contact,
+			)
 		})
 	})
 
@@ -42,15 +37,14 @@ func TestContact(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name": "API Support",
-				"url":  "https://example.com/support",
-			})
-			gotBytes, gotErr := json.Marshal(contact)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"name": "API Support",
+					"url":  "https://example.com/support",
+				},
+				contact,
+			)
 		})
 	})
 
@@ -65,15 +59,14 @@ func TestContact(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name":  "API Support",
-				"email": "greeting-api@support.example.com",
-			})
-			gotBytes, gotErr := json.Marshal(contact)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"name":  "API Support",
+					"email": "greeting-api@support.example.com",
+				},
+				contact,
+			)
 		})
 	})
 }

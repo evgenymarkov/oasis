@@ -1,12 +1,10 @@
 package openapi3_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestTag(t *testing.T) {
@@ -20,14 +18,11 @@ func TestTag(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name": "payments",
-			})
-			gotBytes, gotErr := json.Marshal(tag)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{"name": "payments"},
+				tag,
+			)
 		})
 	})
 
@@ -42,15 +37,14 @@ func TestTag(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name":        "payments",
-				"description": "Payments operations",
-			})
-			gotBytes, gotErr := json.Marshal(tag)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"name":        "payments",
+					"description": "Payments operations",
+				},
+				tag,
+			)
 		})
 	})
 
@@ -71,18 +65,17 @@ func TestTag(t *testing.T) {
 		})
 
 		t.Run("Serialization", func(t *testing.T) {
-			wantBytes, wantErr := json.Marshal(map[string]any{
-				"name": "payments",
-				"externalDocs": map[string]any{
-					"url":         "https://example.com",
-					"description": "Popular search engine",
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"name": "payments",
+					"externalDocs": map[string]any{
+						"url":         "https://example.com",
+						"description": "Popular search engine",
+					},
 				},
-			})
-			gotBytes, gotErr := json.Marshal(tag)
-
-			require.NoError(t, wantErr)
-			require.NoError(t, gotErr)
-			assert.JSONEq(t, string(wantBytes), string(gotBytes))
+				tag,
+			)
 		})
 	})
 }
