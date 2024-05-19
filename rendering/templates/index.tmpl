@@ -3,17 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <title>{{.Title}}</title>
+
     <link rel="stylesheet" type="text/css" href="{{.BaseURL}}/index.css" />
     <link rel="stylesheet" type="text/css" href="{{.BaseURL}}/swagger-ui.css" />
     <link rel="icon" type="image/png" href="{{.BaseURL}}/favicon-32x32.png" sizes="32x32" />
+
+    <style>
+      /* Fix unnecessary word breaking in OperationID block */
+      .swagger-ui .opblock .opblock-summary-operation-id {
+        word-break: normal;
+      }
+    </style>
   </head>
 
   <body>
     <div id="swagger-ui"></div>
     <script src="{{.BaseURL}}/swagger-ui-bundle.js"></script>
+
     <script id="openapi-document" type="application/json">
       {{.Document}}
     </script>
+
     <script>
       const openapiDocument = document.querySelector("#openapi-document");
       const apiSpecification = JSON.parse(openapiDocument.textContent);
@@ -22,6 +32,7 @@
           spec: apiSpecification,
           dom_id: "#swagger-ui",
           deepLinking: true,
+          displayOperationId: true,
           presets: [SwaggerUIBundle.presets.apis],
         });
       };

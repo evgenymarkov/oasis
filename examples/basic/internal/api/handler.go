@@ -6,9 +6,9 @@ import (
 	"github.com/evgenymarkov/oasis/openapi3"
 )
 
-var GetGreetingOperation = openapi3.NewOperation().
-	SetOperationID("get-greeting").
-	SetSummary("Get a greeting")
+var GetGreetingOperation = openapi3.NewOperation("GetGreeting").
+	SetSummary("Get a greeting").
+	SetTags(greetingsTag)
 
 func GetGreetingHandler(response http.ResponseWriter, _ *http.Request) {
 	_, _ = response.Write([]byte("Hello, world!"))

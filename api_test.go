@@ -16,8 +16,7 @@ type endpoint struct {
 	pattern string
 }
 
-var pingOperation = openapi3.NewOperation().
-	SetOperationID("ping").
+var pingOperation = openapi3.NewOperation("Ping").
 	SetSummary("Ping server")
 
 func pingHandler(response http.ResponseWriter, _ *http.Request) {
@@ -114,29 +113,25 @@ func TestAPIWithOverlappingPaths(t *testing.T) {
 	api.Get(
 		"/resource",
 		pingHandler,
-		openapi3.NewOperation().
-			SetOperationID("get-resource").
+		openapi3.NewOperation("GetResource").
 			SetSummary("Get Resource"),
 	)
 	api.Post(
 		"/resource",
 		pingHandler,
-		openapi3.NewOperation().
-			SetOperationID("post-resource").
+		openapi3.NewOperation("PostResource").
 			SetSummary("Create Resource"),
 	)
 	api.Get(
 		"/resource/{id}",
 		pingHandler,
-		openapi3.NewOperation().
-			SetOperationID("get-resource-by-id").
+		openapi3.NewOperation("GetResourceByID").
 			SetSummary("Get Resource by ID"),
 	)
 	api.Put(
 		"/resource/{id}",
 		pingHandler,
-		openapi3.NewOperation().
-			SetOperationID("put-resource-by-id").
+		openapi3.NewOperation("PutResourceByID").
 			SetSummary("Update Resource by ID"),
 	)
 

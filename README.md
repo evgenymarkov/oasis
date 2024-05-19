@@ -68,7 +68,7 @@ import (
 )
 
 var GetGreetingOperation = openapi3.NewOperation().
-	SetOperationID("get-greeting").
+	SetOperationID("GetGreeting").
 	SetSummary("Get a greeting")
 
 func GetGreetingHandler(response http.ResponseWriter, _ *http.Request) {
