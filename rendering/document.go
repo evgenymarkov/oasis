@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"sync"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 )
@@ -14,12 +15,13 @@ func NewDocumentHandler(document *openapi3.Document) http.HandlerFunc {
 	var (
 		documentBytes     []byte
 		documentRenderErr error
+		renderOnce        sync.Once
 	)
 
 	return func(response http.ResponseWriter, _ *http.Request) {
-		if documentBytes == nil && documentRenderErr == nil {
+		renderOnce.Do(func() {
 			documentBytes, documentRenderErr = json.Marshal(document)
-		}
+		})
 
 		if documentRenderErr != nil {
 			message := errors.Join(errDocumentRender, documentRenderErr).Error()
