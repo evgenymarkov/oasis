@@ -28,14 +28,10 @@ func TestPathItem(t *testing.T) {
 	})
 
 	t.Run("WithOperations", func(t *testing.T) {
-		getOperation := &openapi3.Operation{
-			OperationID: "get-something",
-			Summary:     "Get operation",
-		}
-		postOperation := &openapi3.Operation{
-			OperationID: "save-something",
-			Summary:     "Post operation",
-		}
+		getOperation := openapi3.NewOperation("GetSomething").
+			SetSummary("Get operation")
+		postOperation := openapi3.NewOperation("SaveSomething").
+			SetSummary("Post operation")
 		pathItem := openapi3.NewPathItem().
 			SetOperation("GET", getOperation).
 			SetOperation("POST", postOperation)
@@ -50,11 +46,11 @@ func TestPathItem(t *testing.T) {
 				t,
 				map[string]any{
 					"get": map[string]any{
-						"operationId": "get-something",
+						"operationId": "GetSomething",
 						"summary":     "Get operation",
 					},
 					"post": map[string]any{
-						"operationId": "save-something",
+						"operationId": "SaveSomething",
 						"summary":     "Post operation",
 					},
 				},

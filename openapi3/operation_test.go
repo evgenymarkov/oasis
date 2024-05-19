@@ -7,33 +7,130 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestOperationDefaults(t *testing.T) {
-	operation := openapi3.NewOperation()
+func TestOperation(t *testing.T) {
+	t.Run("Basic", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet")
 
-	assert.Equal(t, "", operation.OperationID)
-	assert.Equal(t, "", operation.Summary)
-}
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+		})
 
-func TestOperationOverrides(t *testing.T) {
-	operation := openapi3.NewOperation().
-		SetOperationID("get-greeting").
-		SetSummary("Get greeting")
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{"operationId": "GetPet"},
+				operation,
+			)
+		})
+	})
 
-	assert.Equal(t, "get-greeting", operation.OperationID)
-	assert.Equal(t, "Get greeting", operation.Summary)
-}
+	t.Run("WithSummary", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			SetSummary("Get a pet by ID")
 
-func TestOperationMarshaling(t *testing.T) {
-	operation := openapi3.NewOperation().
-		SetOperationID("get-greeting").
-		SetSummary("Get greeting")
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(t, "Get a pet by ID", operation.Summary)
+		})
 
-	assertObjectSerialization(
-		t,
-		map[string]any{
-			"operationId": "get-greeting",
-			"summary":     "Get greeting",
-		},
-		operation,
-	)
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"summary":     "Get a pet by ID",
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithDescription", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			SetDescription("Returns a single pet")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(t, "Returns a single pet", operation.Description)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"description": "Returns a single pet",
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithDeprecation", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			MarkAsDeprecated()
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.True(t, operation.Deprecated)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"deprecated":  true,
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithExternalDocs", func(t *testing.T) {
+		externalDocs := openapi3.NewExternalDocumentation("https://example.com/docs").
+			SetDescription("Additional documentation")
+		operation := openapi3.NewOperation("GetPet").
+			SetExternalDocs(externalDocs)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(t, externalDocs, operation.ExternalDocs)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"externalDocs": map[string]any{
+						"url":         "https://example.com/docs",
+						"description": "Additional documentation",
+					},
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithTags", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			SetTags("pets", "read")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.ElementsMatch(t, []string{"pets", "read"}, operation.Tags)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"tags":        []string{"pets", "read"},
+				},
+				operation,
+			)
+		})
+	})
 }

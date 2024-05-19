@@ -350,14 +350,10 @@ func TestDocument(t *testing.T) {
 	})
 
 	t.Run("WithPaths", func(t *testing.T) {
-		getOperation := &openapi3.Operation{
-			OperationID: "get-operation",
-			Summary:     "Get operation",
-		}
-		postOperation := &openapi3.Operation{
-			OperationID: "save-operation",
-			Summary:     "Post operation",
-		}
+		getOperation := openapi3.NewOperation("GetOperation").
+			SetSummary("Get operation")
+		postOperation := openapi3.NewOperation("SaveOperation").
+			SetSummary("Post operation")
 		document := openapi3.NewDocument().
 			AddOperation("/example", "GET", getOperation).
 			AddOperation("/example", "POST", postOperation)
@@ -381,11 +377,11 @@ func TestDocument(t *testing.T) {
 					"paths": map[string]any{
 						"/example": map[string]any{
 							"get": map[string]any{
-								"operationId": "get-operation",
+								"operationId": "GetOperation",
 								"summary":     "Get operation",
 							},
 							"post": map[string]any{
-								"operationId": "save-operation",
+								"operationId": "SaveOperation",
 								"summary":     "Post operation",
 							},
 						},

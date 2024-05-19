@@ -7,6 +7,10 @@ import (
 	"github.com/evgenymarkov/oasis/openapi3"
 )
 
+const (
+	greetingsTag = "Greetings"
+)
+
 func NewAPI(mux *http.ServeMux) *oasis.API {
 	api := oasis.NewAPI(
 		mux,
@@ -31,6 +35,10 @@ func NewAPI(mux *http.ServeMux) *oasis.API {
 			SetExternalDocs(
 				openapi3.NewExternalDocumentation("https://spec.openapis.org/oas/latest.html").
 					SetDescription("OpenAPI specification document"),
+			).
+			SetTags(
+				openapi3.NewTag(greetingsTag).
+					SetDescription("Operations that perform greetings"),
 			),
 	)
 
