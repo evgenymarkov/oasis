@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/evgenymarkov/oasis/openapi3"
 )
@@ -37,23 +38,26 @@ const (
 	indexTemplateName = "swagger-ui.index.tmpl"
 )
 
+var errSwaggerUIRender = errors.New("failed to render swagger ui")
+
 func NewSwaggerUIHandler(config SwaggerUIConfig) http.HandlerFunc {
 	var (
 		indexBytes     []byte
 		indexRenderErr error
+		renderOnce     sync.Once
 	)
 
 	indexTemplate, indexReadErr := template.New(indexTemplateName).Parse(indexTemplateRaw)
 
 	return func(response http.ResponseWriter, _ *http.Request) {
 		if indexReadErr != nil {
-			message := errors.Join(errDocumentRender, indexReadErr).Error()
+			message := errors.Join(errSwaggerUIRender, indexReadErr).Error()
 			http.Error(response, message, http.StatusInternalServerError)
 
 			return
 		}
 
-		if indexBytes == nil && indexRenderErr == nil {
+		renderOnce.Do(func() {
 			indexBuffer := bytes.Buffer{}
 			indexRenderErr = indexTemplate.Execute(&indexBuffer, indexRenderData{
 				BaseURL:  config.BaseURL,
@@ -64,10 +68,10 @@ func NewSwaggerUIHandler(config SwaggerUIConfig) http.HandlerFunc {
 			if indexRenderErr == nil {
 				indexBytes = indexBuffer.Bytes()
 			}
-		}
+		})
 
 		if indexRenderErr != nil {
-			message := errors.Join(errDocumentRender, indexRenderErr).Error()
+			message := errors.Join(errSwaggerUIRender, indexRenderErr).Error()
 			http.Error(response, message, http.StatusInternalServerError)
 
 			return
