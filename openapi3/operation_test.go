@@ -66,7 +66,7 @@ func TestOperation(t *testing.T) {
 		})
 	})
 
-	t.Run("WithDeprecation", func(t *testing.T) {
+	t.Run("WithDeprecatedFlag", func(t *testing.T) {
 		operation := openapi3.NewOperation("GetPet").
 			MarkAsDeprecated()
 
