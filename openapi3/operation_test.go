@@ -24,6 +24,48 @@ func TestOperation(t *testing.T) {
 		})
 	})
 
+	t.Run("WithSummary", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			SetSummary("Get a pet by ID")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(t, "Get a pet by ID", operation.Summary)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"summary":     "Get a pet by ID",
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithDescription", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			SetDescription("Returns a single pet")
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(t, "Returns a single pet", operation.Description)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"description": "Returns a single pet",
+				},
+				operation,
+			)
+		})
+	})
+
 	t.Run("WithParameters", func(t *testing.T) {
 		operation := openapi3.NewOperation("GetPet").
 			AddParameter(
@@ -67,48 +109,6 @@ func TestOperation(t *testing.T) {
 							"description": "Whether to show extra details",
 						},
 					},
-				},
-				operation,
-			)
-		})
-	})
-
-	t.Run("WithSummary", func(t *testing.T) {
-		operation := openapi3.NewOperation("GetPet").
-			SetSummary("Get a pet by ID")
-
-		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "GetPet", operation.OperationID)
-			assert.Equal(t, "Get a pet by ID", operation.Summary)
-		})
-
-		t.Run("Serialization", func(t *testing.T) {
-			assertObjectSerialization(
-				t,
-				map[string]any{
-					"operationId": "GetPet",
-					"summary":     "Get a pet by ID",
-				},
-				operation,
-			)
-		})
-	})
-
-	t.Run("WithDescription", func(t *testing.T) {
-		operation := openapi3.NewOperation("GetPet").
-			SetDescription("Returns a single pet")
-
-		t.Run("Values", func(t *testing.T) {
-			assert.Equal(t, "GetPet", operation.OperationID)
-			assert.Equal(t, "Returns a single pet", operation.Description)
-		})
-
-		t.Run("Serialization", func(t *testing.T) {
-			assertObjectSerialization(
-				t,
-				map[string]any{
-					"operationId": "GetPet",
-					"description": "Returns a single pet",
 				},
 				operation,
 			)
