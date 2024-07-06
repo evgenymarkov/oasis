@@ -21,7 +21,7 @@ tasks:
 
   update-swagger-ui:
     vars:
-      VERSION: "5.17.10" # https://github.com/swagger-api/swagger-ui/releases
+      VERSION: "5.17.14" # https://github.com/swagger-api/swagger-ui/releases
       BASE_URL: "https://github.com/swagger-api/swagger-ui/archive/refs/tags"
     cmds:
       # Create temporary directory for artifacts
