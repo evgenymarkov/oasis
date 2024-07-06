@@ -5,6 +5,9 @@ type Operation struct {
 	// Unique string used to identify the operation.
 	OperationID string `json:"operationId"`
 
+	// A list of parameters for the operation.
+	Parameters []*Parameter `json:"parameters,omitempty"`
+
 	// A short summary of what the operation does.
 	Summary string `json:"summary,omitempty"`
 
@@ -25,12 +28,20 @@ type Operation struct {
 func NewOperation(operationID string) *Operation {
 	return &Operation{
 		OperationID:  operationID,
+		Parameters:   make([]*Parameter, 0),
 		Summary:      "",
 		Description:  "",
 		Deprecated:   false,
 		ExternalDocs: nil,
 		Tags:         make([]string, 0),
 	}
+}
+
+// AddParameter adds a parameter to the operation.
+func (o *Operation) AddParameter(parameter *Parameter) *Operation {
+	o.Parameters = append(o.Parameters, parameter)
+
+	return o
 }
 
 // SetSummary sets the summary.
