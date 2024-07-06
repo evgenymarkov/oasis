@@ -66,7 +66,56 @@ func TestOperation(t *testing.T) {
 		})
 	})
 
-	t.Run("WithDeprecation", func(t *testing.T) {
+	t.Run("WithParameters", func(t *testing.T) {
+		operation := openapi3.NewOperation("GetPet").
+			AddParameter(
+				openapi3.NewParameter("petId", "path").
+					SetDescription("ID of pet to return"),
+			).
+			AddParameter(
+				openapi3.NewParameter("showExtra", "query").
+					SetDescription("Whether to show extra details"),
+			)
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "GetPet", operation.OperationID)
+			assert.Equal(
+				t,
+				[]*openapi3.Parameter{
+					openapi3.NewParameter("petId", "path").
+						SetDescription("ID of pet to return"),
+					openapi3.NewParameter("showExtra", "query").
+						SetDescription("Whether to show extra details"),
+				},
+				operation.Parameters,
+			)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"operationId": "GetPet",
+					"parameters": []map[string]any{
+						{
+							"name":        "petId",
+							"in":          "path",
+							"description": "ID of pet to return",
+							"required":    true,
+						},
+						{
+							"name":        "showExtra",
+							"in":          "query",
+							"description": "Whether to show extra details",
+						},
+					},
+				},
+				operation,
+			)
+		})
+	})
+
+	t.Run("WithDeprecatedFlag", func(t *testing.T) {
 		operation := openapi3.NewOperation("GetPet").
 			MarkAsDeprecated()
 

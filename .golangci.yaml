@@ -17,6 +17,9 @@ issues:
   max-same-issues: 0
   max-issues-per-linter: 0
   exclude-rules:
+    - path: \.go
+      linters:
+        - varnamelen
     - path: examples/
       linters:
         - gosec

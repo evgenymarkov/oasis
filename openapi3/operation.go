@@ -11,6 +11,9 @@ type Operation struct {
 	// A verbose explanation of the operation behavior.
 	Description string `json:"description,omitempty"`
 
+	// A list of parameters for the operation.
+	Parameters []*Parameter `json:"parameters,omitempty"`
+
 	// Declares this operation to be deprecated.
 	Deprecated bool `json:"deprecated,omitempty"`
 
@@ -27,6 +30,7 @@ func NewOperation(operationID string) *Operation {
 		OperationID:  operationID,
 		Summary:      "",
 		Description:  "",
+		Parameters:   make([]*Parameter, 0),
 		Deprecated:   false,
 		ExternalDocs: nil,
 		Tags:         make([]string, 0),
@@ -43,6 +47,13 @@ func (o *Operation) SetSummary(summary string) *Operation {
 // SetDescription sets the description.
 func (o *Operation) SetDescription(description string) *Operation {
 	o.Description = description
+
+	return o
+}
+
+// AddParameter adds a parameter to the operation.
+func (o *Operation) AddParameter(parameter *Parameter) *Operation {
+	o.Parameters = append(o.Parameters, parameter)
 
 	return o
 }
