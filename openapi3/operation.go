@@ -1,6 +1,8 @@
 package openapi3
 
 // Operation represents a single API operation on a path.
+//
+// https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#operation-object
 type Operation struct {
 	// Unique string used to identify the operation.
 	OperationID string `json:"operationId"`

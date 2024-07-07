@@ -1,6 +1,8 @@
 package openapi3
 
 // Parameter represents a parameter of OpenAPI operation.
+//
+// https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object
 type Parameter struct {
 	// Name of the parameter.
 	Name string `json:"name"`
@@ -16,6 +18,9 @@ type Parameter struct {
 
 	// Specifies that a parameter is deprecated and should be transitioned out of usage.
 	Deprecated bool `json:"deprecated,omitempty"`
+
+	// Examples of the parameter usage.
+	Examples map[string]*Example `json:"examples,omitempty"`
 }
 
 // NewParameter creates a new Parameter.
@@ -26,6 +31,7 @@ func NewParameter(name, in string) *Parameter {
 		Description: "",
 		Required:    in == "path",
 		Deprecated:  false,
+		Examples:    make(map[string]*Example),
 	}
 }
 
@@ -46,6 +52,13 @@ func (p *Parameter) MarkAsRequired() *Parameter {
 // MarkAsDeprecated marks the parameter as deprecated.
 func (p *Parameter) MarkAsDeprecated() *Parameter {
 	p.Deprecated = true
+
+	return p
+}
+
+// AddExample adds an example to the parameter.
+func (p *Parameter) AddExample(name string, example *Example) *Parameter {
+	p.Examples[name] = example
 
 	return p
 }

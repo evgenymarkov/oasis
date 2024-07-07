@@ -119,4 +119,32 @@ func TestParameter(t *testing.T) {
 			)
 		})
 	})
+
+	t.Run("WithExamples", func(t *testing.T) {
+		parameter := openapi3.NewParameter("id", "query").
+			AddExample("example1", openapi3.NewExample("1")).
+			AddExample("example2", openapi3.NewExample(map[string]any{"key": "value"}))
+
+		t.Run("Values", func(t *testing.T) {
+			assert.Equal(t, "id", parameter.Name)
+			assert.Equal(t, "query", parameter.In)
+			assert.Equal(t, "1", parameter.Examples["example1"].Value)
+			assert.Equal(t, map[string]any{"key": "value"}, parameter.Examples["example2"].Value)
+		})
+
+		t.Run("Serialization", func(t *testing.T) {
+			assertObjectSerialization(
+				t,
+				map[string]any{
+					"name": "id",
+					"in":   "query",
+					"examples": map[string]any{
+						"example1": map[string]any{"value": "1"},
+						"example2": map[string]any{"value": map[string]any{"key": "value"}},
+					},
+				},
+				parameter,
+			)
+		})
+	})
 }

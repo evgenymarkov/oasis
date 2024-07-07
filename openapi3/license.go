@@ -1,6 +1,8 @@
 package openapi3
 
 // License information for the exposed API.
+//
+// https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#license-object
 type License struct {
 	// The license name used for the API.
 	Name string `json:"name"`
