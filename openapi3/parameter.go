@@ -1,6 +1,8 @@
 package openapi3
 
 // Parameter represents a parameter of OpenAPI operation.
+//
+// https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.1.0.md#parameter-object
 type Parameter struct {
 	// Name of the parameter.
 	Name string `json:"name"`
